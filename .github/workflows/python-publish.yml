@@ -10,12 +10,13 @@ name: Upload Python Package to PyPI
 
 on:
   workflow_dispatch:
-    inputs:
-      isTest:
-        description: Should the package be pushed to TestPyPI?
-        type: boolean
-        required: false
-        default: false
+# Right now, boolean inputs are broken. this can be reenabled when this is fixed
+#    inputs:
+#      isTest:
+#        description: Should the package be pushed to TestPyPI?
+#        type: boolean
+#        required: false
+#        default: false
 
 jobs:
   build-and-publish:
@@ -47,8 +48,9 @@ jobs:
       with:
         password: ${{ secrets.TEST_PYPI_API_TOKEN }}
         repository_url: https://test.pypi.org/legacy/
-    - name: Publish distribution to PyPI
-      if: ${{ !github.event.inputs.isTest }} && startsWith(github.ref, 'refs/tags')
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        password: ${{ secrets.PYPI_API_TOKEN }}
+# Enable when ready to publish straight to PyPI
+#    - name: Publish distribution to PyPI
+#      if: ${{ !github.event.inputs.isTest }} && startsWith(github.ref, 'refs/tags')
+#      uses: pypa/gh-action-pypi-publish@master
+#      with:
+#        password: ${{ secrets.PYPI_API_TOKEN }}
