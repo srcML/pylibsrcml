@@ -42,15 +42,15 @@ jobs:
         --wheel
         --outdir dist/
         .
-    - name: Publish distribution to Test PyPI
-      if: ${{ github.event.inputs.isTest }}
+    - name: Publish distribution to PyPI
+#     if: ${{ !github.event.inputs.isTest }} && startsWith(github.ref, 'refs/tags')
       uses: pypa/gh-action-pypi-publish@master
       with:
-        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        repository_url: https://test.pypi.org/legacy/
-# Enable when ready to publish straight to PyPI
-#    - name: Publish distribution to PyPI
-#      if: ${{ !github.event.inputs.isTest }} && startsWith(github.ref, 'refs/tags')
+        password: ${{ secrets.PYPI_API_TOKEN }}
+# Enable if you want to publish to TestPyPI
+#    - name: Publish distribution to Test PyPI
+#      if: ${{ github.event.inputs.isTest }}
 #      uses: pypa/gh-action-pypi-publish@master
 #      with:
-#        password: ${{ secrets.PYPI_API_TOKEN }}
+#        password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+#        repository_url: https://test.pypi.org/legacy/
