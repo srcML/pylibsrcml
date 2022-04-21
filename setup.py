@@ -36,7 +36,7 @@ setuptools.setup(
     python_requires=">=3.7",
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: GNU General Public License V3",
+        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ]
 )
