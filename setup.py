@@ -23,7 +23,7 @@ import setuptools
 
 setuptools.setup(
     name = 'pylibsrcml',
-    version = '1.0.0',
+    version = '1.0.0-1',
     author = 'srcML Team',
     author_email = 'srcml@kent.edu',
     package_dir={"": "src"},
