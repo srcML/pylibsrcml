@@ -11,37 +11,12 @@
 
 import os
 from ctypes import cdll, c_int, c_size_t, c_char_p, POINTER, c_ulonglong
+from ctypes.util import find_library
 from pylibsrcml.exception import *
 
-LIBSRCML_PATH = ""
-if os.path.exists('../bin/libsrcml.dylib') :
-    LIBSRCML_PATH = "../bin/libsrcml.dylib"
-elif os.path.exists('../bin/libsrcml.so') :
-    LIBSRCML_PATH = "../bin/libsrcml.so"
-elif os.path.exists('../bin/libsrcml.dll') :
-    LIBSRCML_PATH = "../bin/libsrcml.dll"
-elif os.path.exists('../../bin/libsrcml.dylib') :
-    LIBSRCML_PATH = "../../bin/libsrcml.dylib"
-elif os.path.exists('../../bin/libsrcml.so') :
-    LIBSRCML_PATH = "../../bin/libsrcml.so"
-elif os.path.exists('../../bin/libsrcml.dll') :
-    LIBSRCML_PATH = "../../bin/libsrcml.dll"
-elif os.path.exists('../bin/Release/libsrcml.dylib') :
-    LIBSRCML_PATH = "../bin/Release/libsrcml.dylib"
-elif os.path.exists('../bin/Release/libsrcml.so') :
-    LIBSRCML_PATH = "../bin/Release/libsrcml.so"
-elif os.path.exists('../bin/Release/libsrcml.dll') :
-    LIBSRCML_PATH = "../bin/Release/libsrcml.dll"
-elif os.path.exists('../bin/Debug/libsrcml.dylib') :
-    LIBSRCML_PATH = "../bin/Debug/libsrcml.dylib"
-elif os.path.exists('../bin/Debug/libsrcml.so') :
-    LIBSRCML_PATH = "../bin/Debug/libsrcml.so"
-elif os.path.exists('../bin/Debug/libsrcml.dll') :
-    LIBSRCML_PATH = "../bin/Debug/libsrcml.dll"
-elif os.path.exists("/usr/lib/libsrcml.so") :
-    LIBSRCML_PATH = "/usr/lib/libsrcml.so"
-elif os.path.exists("/usr/local/lib/libsrcml.dylib") :
-    LIBSRCML_PATH = "/usr/local/lib/libsrcml.dylib"
+LIBSRCML_PATH = find_library("srcml") if find_library("srcml") != None else find_library("libsrcml")
+if(LIBSRCML_PATH == None):
+    raise SrcMLNotFoundError
 
 libsrcml = cdll.LoadLibrary(LIBSRCML_PATH)
 

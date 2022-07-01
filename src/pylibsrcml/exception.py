@@ -26,3 +26,8 @@ class srcMLException(Exception) :
 
     def __str__(self) :
         return self.message
+
+# Class representing an error for when srcML cannot be found
+class SrcMLNotFoundError(Exception):
+    def __str__(self):
+        return "srcML could not be found on your system. For installation instructions, visit https://www.srcml.org/"
