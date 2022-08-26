@@ -9,12 +9,12 @@
 # You should have received a copy of the GNU General Public License along with srcML Infrastructure. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************************************************************************************************
 
-from pylibsrcml.globals import libsrcml
+from .globals import libsrcml
 from ctypes import c_ushort, c_int, c_double, c_size_t, c_void_p, c_char_p, pointer, c_ulonglong, CFUNCTYPE
 import ctypes
 
-from pylibsrcml.srcml_unit import srcml_unit
-from pylibsrcml.exception import *
+from .srcml_unit import srcml_unit
+from .exception import *
 
 write_callback_t = CFUNCTYPE(c_int, c_void_p, c_char_p, c_size_t)
 read_callback_t  = CFUNCTYPE(c_int, c_char_p, c_size_t)

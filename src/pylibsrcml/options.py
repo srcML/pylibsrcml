@@ -40,6 +40,10 @@ SRCML_STATUS_UNSET_LANGUAGE                      = 7
 SRCML_STATUS_NO_TRANSFORMATION                   = 8
 # --------------------------------------------------------
 
+# Status Class (TODO)
+class srcML_Status:
+    pass
+
 
 # Language Set
 # --------------------------------------------------------

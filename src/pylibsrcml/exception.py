@@ -9,7 +9,7 @@
 # You should have received a copy of the GNU General Public License along with srcML Infrastructure. If not, see <https://www.gnu.org/licenses/>.
 # ********************************************************************************************************************************************************
 
-from pylibsrcml.options import SRCML_STATUS_OK
+from .options import SRCML_STATUS_OK
 
 # Checks return status value of libsrcml call
 # Raises a srcML exception if status is not okay
@@ -26,3 +26,8 @@ class srcMLException(Exception) :
 
     def __str__(self) :
         return self.message
+
+# Class representing an error for when srcML cannot be found
+class srcMLNotFoundError(Exception):
+    def __str__(self):
+        return "srcML could not be found on your system. For installation instructions, visit https://www.srcml.org/"
