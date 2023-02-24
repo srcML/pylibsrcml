@@ -2,6 +2,8 @@ from .globals import libsrcml
 from .exceptions import srcMLTypeError, srcMLInvalidConstruction, check_srcml_status
 
 from typing import ForwardRef
+from ctypes import pointer, c_char_p, c_size_t
+
 SRCML_UNIT = ForwardRef("srcml_unit")
 SRCML_ARCHIVE = ForwardRef("srcml_archive")
 
@@ -279,10 +281,14 @@ class srcml_unit:
     # Return: a bytes buffer containing the srcML data
     # -------------------------------------------------------------------------------------------
     # NOTE: Disabled until unparse can be better understood.
-    #def unparse_memory(self) -> bytes :
-    #    buffer = bytes()
-    #    check_return(libsrcml.srcml_unit_unparse_memory(self.unit, pointer(self.src_buffer), pointer(self.src_size)))
-    #    check_srcml_status(status)
+    def unparse_memory(self) -> bytes :
+        buffer = c_char_p()
+        x = c_size_t()
+        #print("BEF:",buffer.value)
+        status = libsrcml.srcml_unit_unparse_memory(self.c_unit, pointer(buffer), pointer(x))
+        check_srcml_status(status)
+        #print("AFT",buffer.value)
+        return buffer.value.decode()
 
     # -------------------------------------------------------------------------------------------
     # Convert the srcML in a unit into source code and output to the FILE*
