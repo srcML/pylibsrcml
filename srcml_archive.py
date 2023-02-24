@@ -546,7 +546,7 @@ class srcml_archive:
     # -------------------------------------------------------------------------------------------
     def read_unit(self) -> SRCML_UNIT | None:
         c_unit = libsrcml.srcml_archive_read_unit(self.c_archive)
-        return srcml_unit(self, c_unit) if c_unit else None
+        return srcml_unit(c_unit) if c_unit else None
 
     # -------------------------------------------------------------------------------------------
     # Skip the next unit from the archive
