@@ -71,12 +71,15 @@
 // IDEA - Allow archives to work with `with` syntax
 &&void srcml_archive_free(struct srcml_archive* archive); // NOTE: Turned into `__del__`
 **int srcml_archive_write_open_filename(struct srcml_archive* archive, const char* srcml_filename);**
---int srcml_archive_write_open_memory(struct srcml_archive* archive, char** buffer, size_t * size);
+**int srcml_archive_write_open_memory(struct srcml_archive* archive, char** buffer, size_t * size);
+!! write_open_string(self) -> str // NEW: Uses srcml_archive_write_open_memory
+!! write_open_file(self, file: File) // NEW: Uses srcml_archive_write_open_fd
 --int srcml_archive_write_open_FILE(struct srcml_archive* archive, FILE* srcml_file);
 --int srcml_archive_write_open_fd(struct srcml_archive* archive, int srcml_fd);
 --int srcml_archive_write_open_io(struct srcml_archive* archive, void * context, int (*write_callback)(void * context, const char* buffer, int len), int (*close_callback)(void * context));
 **int srcml_archive_read_open_filename(struct srcml_archive* archive, const char* srcml_filename);
 **int srcml_archive_read_open_memory(struct srcml_archive* archive, const char* buffer, size_t buffer_size);
+!!read_open_file(self, file: File) // NOTE - uses srcml_archive_read_open_fd, but takes a TextIOWrapper
 --int srcml_archive_read_open_FILE(struct srcml_archive* archive, FILE* srcml_file);
 --int srcml_archive_read_open_fd(struct srcml_archive* archive, int srcml_fd);
 --int srcml_archive_read_open_io(struct srcml_archive* archive, void * context, int (*read_callback)(void * context, char* buffer, int len), int (*close_callback)(void * context));
@@ -178,7 +181,8 @@
 --int srcml_unit_parse_fd(struct srcml_unit* unit, int src_fd);
 --int srcml_unit_parse_io(struct srcml_unit* unit, void * context, ssize_t (*read_callback)(void * context, void * buffer, size_t len), int (*close_callback)(void * context));
 **int srcml_unit_unparse_filename(struct srcml_unit* unit, const char* src_filename);
---int srcml_unit_unparse_memory(struct srcml_unit* unit, char** src_buffer, size_t * src_size);
+**int srcml_unit_unparse_memory(struct srcml_unit* unit, char** src_buffer, size_t * src_size);
+!!unparse_string(self) // NEW: Returns the unparsed unit as a string. Uses srcml_unit_unparse_memory
 --int srcml_unit_unparse_FILE(struct srcml_unit* unit, FILE* file);
 --int srcml_unit_unparse_fd(struct srcml_unit* unit, int fd);
 --int srcml_unit_unparse_io(struct srcml_unit* unit, void * context, int (*write_callback)(void * context, const char* buffer, int len), int (*close_callback)(void * context));

@@ -244,6 +244,64 @@ archive.close()
 
 
 #################################################
+# archive.append_transform_xslt_file
+#################################################
+with open("copy.xsl",'r') as copy:
+    archive = pylibsrcml.srcml_archive()
+    archive.append_transform_xslt_file(copy)
+    archive.close()
+#################################################
+with open("copy.xsl",'r') as copy:
+    archive = pylibsrcml.srcml_archive()
+    archive.append_transform_xslt_file(copy)
+    archive.close()
+#################################################
+with open("copy.xsl",'r') as copy:
+    archive = pylibsrcml.srcml_archive()
+    try:
+        archive.append_transform_xslt_file(0)
+    except pylibsrcml.srcMLTypeError:
+        pass
+    archive.close()
+#################################################
+with open("copy.xsl",'r') as copy:
+    archive = pylibsrcml.srcml_archive()
+    archive.c_archive = 0
+    try:
+        archive.append_transform_xslt_file(copy)
+    except pylibsrcml.srcMLException as err:
+        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+    archive.close()
+#################################################
+with open("copy.xsl",'r') as copy:
+    archive = pylibsrcml.srcml_archive()
+    archive.c_archive = None
+    try:
+        archive.append_transform_xslt_file(copy)
+    except pylibsrcml.srcMLException as err:
+        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+    archive.close()
+#################################################
+with open("empty.txt",'r') as copy:
+    archive = pylibsrcml.srcml_archive()
+    try:
+        archive.append_transform_xslt_file(copy)
+    except pylibsrcml.srcMLException as err:
+        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+    archive.close()
+#################################################
+with open("wrong.txt",'r') as copy:
+    archive = pylibsrcml.srcml_archive()
+    try:
+        archive.append_transform_xslt_file(copy)
+    except pylibsrcml.srcMLException as err:
+        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+    archive.close()
+#################################################
+
+
+
+#################################################
 # archive.append_transform_xslt_memory
 #################################################
 archive = pylibsrcml.srcml_archive()
@@ -329,41 +387,7 @@ archive.close()
 #################################################
 # archive.append_transform_xslt_fd
 #################################################
-with open("copy.xsl",'r') as file:
-    archive = pylibsrcml.srcml_archive()
-    archive.append_transform_xslt_fd(file)
-    archive.close()
-#################################################
-file = open("copy.xsl",'r')
-archive = pylibsrcml.srcml_archive()
-archive.append_transform_xslt_fd(file)
-archive.close()
-file.close()
-#################################################
-archive = pylibsrcml.srcml_archive()
-try:
-    archive.append_transform_xslt_fd(0)
-except pylibsrcml.srcMLTypeError:
-    pass
-archive.close()
-#################################################
-with open("copy.xsl",'r') as file:
-    archive = pylibsrcml.srcml_archive()
-    archive.c_archive = 0
-    try:
-        archive.append_transform_xslt_fd(file)
-    except pylibsrcml.srcMLException as err:
-        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
-    archive.close()
-#################################################
-with open("copy.xsl",'r') as file:
-    archive = pylibsrcml.srcml_archive()
-    archive.c_archive = None
-    try:
-        archive.append_transform_xslt_fd(file)
-    except pylibsrcml.srcMLException as err:
-        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
-    archive.close()
+# DOES NOT EXIST IN PYTHON - USED IN append_transform_xslt_file INSTEAD
 #################################################
 
 
@@ -400,6 +424,203 @@ try:
     archive.append_transform_relaxng_filename("schema.rng")
 except pylibsrcml.srcMLException as err:
     assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+archive.close()
+#################################################
+
+
+
+#################################################
+# archive.append_transform_relaxng_file
+#################################################
+with open("schema.rng",'r') as schema:
+    archive = pylibsrcml.srcml_archive()
+    archive.append_transform_relaxng_file(schema)
+    archive.close()
+#################################################
+with open("schema.rng",'r') as schema:
+    archive = pylibsrcml.srcml_archive()
+    archive.append_transform_relaxng_file(schema)
+    archive.close()
+#################################################
+with open("schema.rng",'r') as schema:
+    archive = pylibsrcml.srcml_archive()
+    try:
+        archive.append_transform_relaxng_file(0)
+    except pylibsrcml.srcMLTypeError:
+        pass
+    archive.close()
+#################################################
+with open("schema.rng",'r') as schema:
+    archive = pylibsrcml.srcml_archive()
+    archive.c_archive = 0
+    try:
+        archive.append_transform_relaxng_file(schema)
+    except pylibsrcml.srcMLException as err:
+        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+    archive.close()
+#################################################
+with open("schema.rng",'r') as schema:
+    archive = pylibsrcml.srcml_archive()
+    archive.c_archive = None
+    try:
+        archive.append_transform_relaxng_file(schema)
+    except pylibsrcml.srcMLException as err:
+        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+    archive.close()
+#################################################
+with open("empty.txt",'r') as schema:
+    archive = pylibsrcml.srcml_archive()
+    try:
+        archive.append_transform_relaxng_file(schema)
+    except pylibsrcml.srcMLException as err:
+        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+    archive.close()
+#################################################
+with open("wrong.txt",'r') as schema:
+    archive = pylibsrcml.srcml_archive()
+    try:
+        archive.append_transform_relaxng_file(schema)
+    except pylibsrcml.srcMLException as err:
+        assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+    archive.close()
+#################################################
+
+
+
+#################################################
+# archive.append_transform_relaxng_FILE
+#################################################
+# DOES NOT EXIST IN PYTHON
+#################################################
+
+
+
+#################################################
+# archive.append_transform_relaxng_fd
+#################################################
+# DOES NOT EXIST IN PYTHON - USED IN append_transform_relaxng_file INSTEAD
+#################################################
+
+
+
+#################################################
+# archive.append_transform_param
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xslt_filename("copy.xsl")
+archive.append_transform_param("sup","http://srcML.org/Supplement")
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xslt_filename("copy.xsl")
+archive.append_transform_param("sup","http://srcML.org/Supplement")
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.c_archive = 0
+try:
+    archive.append_transform_param("sup","http://srcML.org/Supplement")
+except pylibsrcml.srcMLException as err:
+    assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.c_archive = None
+try:
+    archive.append_transform_param("sup","http://srcML.org/Supplement")
+except pylibsrcml.srcMLException as err:
+    assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xslt_filename("copy.xsl")
+try:
+    archive.append_transform_param(0,"http://srcML.org/Supplement")
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xslt_filename("copy.xsl")
+try:
+    archive.append_transform_param("sup",0)
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+#################################################
+
+
+
+#################################################
+# archive.append_transform_stringparam
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xslt_filename("copy.xsl")
+archive.append_transform_stringparam("sup","http://srcML.org/Supplement")
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xslt_filename("copy.xsl")
+archive.append_transform_stringparam("sup","http://srcML.org/Supplement")
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.c_archive = 0
+try:
+    archive.append_transform_stringparam("sup","http://srcML.org/Supplement")
+except pylibsrcml.srcMLException as err:
+    assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.c_archive = None
+try:
+    archive.append_transform_stringparam("sup","http://srcML.org/Supplement")
+except pylibsrcml.srcMLException as err:
+    assert(err.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT)
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xslt_filename("copy.xsl")
+try:
+    archive.append_transform_stringparam(0,"http://srcML.org/Supplement")
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xslt_filename("copy.xsl")
+try:
+    archive.append_transform_stringparam("sup",0)
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+#################################################
+
+
+
+#################################################
+# archive.append_transform_*
+#################################################
+archive = pylibsrcml.srcml_archive()
+archive.append_transform_xpath("//src:unit")
+archive.append_transform_xslt_filename("copy.xsl")
+archive.append_transform_xslt_memory(copy_byt)
+archive.append_transform_xslt_memory(copy_str)
+
+with open("copy.xsl",'r') as copy:
+    archive.append_transform_xslt_file(copy)
+
+archive.append_transform_param("sup","http://srcML.org/Supplement")
+archive.append_transform_stringparam("sup","http://srcML.org/Supplement")
+
+archive.append_transform_relaxng_filename("schema.rng")
+archive.append_transform_relaxng_memory(schema_str)
+archive.append_transform_relaxng_memory(schema_byt)
+
+with open("schema.rng",'r') as schema:
+    archive.append_transform_relaxng_file(schema)
+
 archive.close()
 #################################################
 

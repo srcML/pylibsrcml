@@ -43,7 +43,10 @@ class srcml_unit:
     # Free an allocated unit (void srcml_unit_free(struct srcml_unit*))
     # -------------------------------------------------------------------------------------------
     def __del__(self) -> None:
-        libsrcml.srcml_unit_free(self.c_unit)
+        print("In Unit Del")
+        print("DELPTR",self.c_unit,hex(self.c_unit))
+        if self.c_unit != 0 and self.c_unit != None:
+            libsrcml.srcml_unit_free(self.c_unit)
 
     # -------------------------------------------------------------------------------------------
     # Set the source-code encoding for the srcml unit
@@ -278,16 +281,25 @@ class srcml_unit:
     # -------------------------------------------------------------------------------------------
     # Convert the srcML in a unit into source code and place it into a buffer
     # The buffer is allocated in the function and needs to be freed after using.
-    # Return: a bytes buffer containing the srcML data
+    # Return: a bytes buffer containing the unit srcML data
     # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled until unparse can be better understood.
     def unparse_memory(self) -> bytes :
         buffer = c_char_p()
-        x = c_size_t()
-        #print("BEF:",buffer.value)
-        status = libsrcml.srcml_unit_unparse_memory(self.c_unit, pointer(buffer), pointer(x))
+        size = c_size_t()
+        status = libsrcml.srcml_unit_unparse_memory(self.c_unit, pointer(buffer), pointer(size))
         check_srcml_status(status)
-        #print("AFT",buffer.value)
+        return buffer.value
+
+    # -------------------------------------------------------------------------------------------
+    # Convert the srcML in a unit into source code and place it into a buffer
+    # The buffer is allocated in the function and needs to be freed after using.
+    # Return: a string containing the unit srcML data
+    # -------------------------------------------------------------------------------------------
+    def unparse_string(self) -> str :
+        buffer = c_char_p()
+        size = c_size_t()
+        status = libsrcml.srcml_unit_unparse_memory(self.c_unit, pointer(buffer), pointer(size))
+        check_srcml_status(status)
         return buffer.value.decode()
 
     # -------------------------------------------------------------------------------------------
