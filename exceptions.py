@@ -7,8 +7,11 @@ class srcMLNotFoundError(Exception):
 
 # Class representing an error for when an invalid type is passed to a pylibsrcml function
 class srcMLTypeError(Exception):
-    def __init__(self, func: "function", arg: str, val):
-        self.msg = f"{func.__name__} requires that parameter `{arg}` be {str(func.__annotations__[arg])} (not {str(type(val))})"
+    def __init__(self, func: "function", arg: str, val, *, inheritance_flag = False):
+        if not inheritance_flag:
+            self.msg = f"{func.__name__} requires that parameter `{arg}` be {str(func.__annotations__[arg])} (not {str(type(val))})"
+        else:
+            self.msg = f"{func.__name__} requires that parameter {arg} be or inherit from {str(func.__annotations__[arg])} (not {str(type(val))})"
     def __str__(self):
         return self.msg
 

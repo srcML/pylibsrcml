@@ -1,18 +1,15 @@
 from .globals import libsrcml
 from .exceptions import srcMLTypeError, srcDiffRevisionInvalid, check_srcml_status
 from .values import srcDiffRevision
-from .srcml_unit import srcml_unit
-from .srcml_transform_result import srcml_transform_result
+from .srcml_unit import srcMLUnit
+from .srcml_transform_result import srcMLTransformResult
 
 from io import TextIOWrapper as File
+from pathlib import Path
 
-from typing import ForwardRef
 from ctypes import pointer, c_char_p, c_size_t
 
-SRCML_UNIT = ForwardRef("srcml_unit")
-SRCML_ARCHIVE = ForwardRef("srcml_archive")
-
-class srcml_archive:
+class srcMLArchive:
     # -------------------------------------------------------------------------------------------
     # Create a new srcml archive (constructor)
     # ------------------------------------------------------------------------------------------- 
@@ -20,15 +17,6 @@ class srcml_archive:
         if type(arch_ptr) != int and arch_ptr != None:
             raise srcMLTypeError(self.__init__,"arch_ptr",arch_ptr)
         self.c_archive = libsrcml.srcml_archive_create() if type(arch_ptr) != int else arch_ptr
-        self.buffer = c_char_p(0)
-        self.size = c_size_t(0)
-
-    # -------------------------------------------------------------------------------------------
-    # Clones the setup of the archive
-    # Return: The cloned archive
-    # -------------------------------------------------------------------------------------------
-    def clone(self) -> SRCML_ARCHIVE:
-        return srcml_archive(libsrcml.srcml_archive_clone(self.c_archive))
 
     # -------------------------------------------------------------------------------------------
     # Provides the code of the last error to occur for the archive
@@ -46,186 +34,18 @@ class srcml_archive:
         return result.decode() if result else None
 
     # -------------------------------------------------------------------------------------------
-    # Append the srcml unit to the srcml archive
-    # Parameter: unit -> A srcml unit to output
-    # Note: Can not mix with by element mode
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    def write_unit(self, unit: srcml_unit) :
-        status = libsrcml.srcml_archive_write_unit(self.c_archive, unit.c_unit)
-        check_srcml_status(status)
-
-    # -------------------------------------------------------------------------------------------
-    # Append the string to the srcml archive
-    # Parameter: s -> String to write
-    # Parameter: len -> Length of the string to write
-    # Note: Can not mix with by element mode
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    def write_string(self, s: str) -> None:
-        if type(s) != str:
-            raise srcMLTypeError(self.write_string,"s",s)
-        
-        status = libsrcml.srcml_archive_write_string(self.c_archive, s.encode(), len(s))
-        check_srcml_status(status)
-
-    # -------------------------------------------------------------------------------------------
-    # Close a srcml archive opened using archive.read_open_*() or archive.write_open_*()
-    # Note: Archive can be reopened
-    # -------------------------------------------------------------------------------------------
-    def close(self) :
-        libsrcml.srcml_archive_close(self.c_archive)
-
-    # -------------------------------------------------------------------------------------------
     # Free a srcml archive that was previously allocated (destructor)
     # Note: The archive must be reallocated/re-created to use again
     # -------------------------------------------------------------------------------------------
     def __del__(self) :
-        print("In Archive Del")
         if self.c_archive != 0 and self.c_archive != None:
             libsrcml.srcml_archive_free(self.c_archive)
 
-
     # -------------------------------------------------------------------------------------------
-    # Open up a srcml archive for writing to a given output file
-    # Parameter: srcml_filename -> Name of an output file
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
+    # Close a srcml archive opened using archive.read_open_*() or archive.write_open_*()
     # -------------------------------------------------------------------------------------------
-    def write_open_filename(self, srcml_filename: str) -> None :
-        if type(srcml_filename) != str:
-            raise srcMLTypeError(self.write_open_filename,"srcml_filename",srcml_filename)
-        
-        status = libsrcml.srcml_archive_write_open_filename(self.c_archive, srcml_filename.encode())
-        check_srcml_status(status)
-
-    # -------------------------------------------------------------------------------------------
-    # Open up a srcml archive for writing to a buffer
-    # Return: a bytes buffer containing the srcML data
-    # -------------------------------------------------------------------------------------------
-    def write_open_memory(self) -> bytes:
-       buffer = c_char_p()
-       size = c_size_t()
-       status = libsrcml.srcml_archive_write_open_memory(self.c_archive, pointer(buffer), pointer(size))
-       check_srcml_status(status)
-       return buffer.value
-
-    # -------------------------------------------------------------------------------------------
-    # Open up a srcml archive for writing to a string
-    # Return: a string containing the srcML data
-    # -------------------------------------------------------------------------------------------
-    def write_open_string(self) -> str:
-       #buffer = c_char_p()
-       size = c_size_t()
-       status = libsrcml.srcml_archive_write_open_memory(self.c_archive, pointer(self.buffer), pointer(size))
-       check_srcml_status(status)
-       print("Buffer:",self.buffer)
-       return self.buffer.value.decode() if self.buffer.value else None
-
-    # -------------------------------------------------------------------------------------------
-    # Open up a srcml archive for writing to a given output file
-    # Parameter: srcml_file -> A file
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    def write_open_file(self, file: File) -> None:
-        if type(file) != File:
-            raise srcMLTypeError(self.read_open_file,"file",file)
-        check_srcml_status(libsrcml.srcml_archive_write_open_fd(self.c_archive,file.fileno()))
-
-
-    # -------------------------------------------------------------------------------------------
-    # Open up a srcml archive for writing to a given FILE pointer
-    # Parameter: srcml_file -> FILE opened for writing
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: disabled, not likely needed for Python
-    #def write_open_FILE(self, srcml_file) :
-    #    check_return(libsrcml.srcml_archive_write_open_FILE(self.archive, srcml_file))
-
-    # -------------------------------------------------------------------------------------------
-    # Open up a srcml archive for writing to a file descriptor
-    # Parameter: srcml_fd -> Output file descriptor
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: disabled, not likely needed for Python
-    #def write_open_fd(self, srcml_fd) :
-    #    check_return(libsrcml.srcml_archive_write_open_fd(self.archive, srcml_fd))
-
-
-
-    # -------------------------------------------------------------------------------------------
-    # Open up a srcml archive for writing to an io context using writeand close callbacks
-    # Parameter: context -> An io context
-    # Parameter: write_callback -> A write callback function
-    # Parameter: close_callback -> A close callback function
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: disabled, not likely needed for Python
-    #def write_open_io(self, context, write_callback, close_callback) :
-    #    check_return(libsrcml.srcml_archive_write_open_io(self.archive, context, write_callback, close_callback))
-
-    # -------------------------------------------------------------------------------------------
-    # Open a srcML archive for reading from a filename
-    # Parameter: srcml_filename -> Name of an input file
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    def read_open_filename(self, srcml_filename: str) -> None :
-        if type(srcml_filename) != str:
-            raise srcMLTypeError(self.read_open_filename,"srcml_filename",srcml_filename)
-        
-        status = libsrcml.srcml_archive_read_open_filename(self.c_archive, srcml_filename.encode())
-        check_srcml_status(status)
-
-    # -------------------------------------------------------------------------------------------
-    # Open a srcML archive for reading from a buffer
-    # Parameter: buffer -> An input buffer
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    def read_open_memory(self, buffer: bytes | str) -> None :
-        if type(buffer) != bytes and type(buffer) != str:
-            raise srcMLTypeError(self.read_open_memory,"buffer",buffer)
-        if type(buffer) == str:
-            buffer = buffer.encode()
-        status = libsrcml.srcml_archive_read_open_memory(self.c_archive, buffer, len(buffer))
-        check_srcml_status(status)
-
-    # -------------------------------------------------------------------------------------------
-    # Open a srcML archive for reading from a file
-    # Parameter: file -> A file containing srcML
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    def read_open_file(self, file: File) -> None:
-        if type(file) != File:
-            raise srcMLTypeError(self.read_open_file,"file",file)
-        check_srcml_status(libsrcml.srcml_archive_read_open_fd(self.c_archive,file.fileno()))
-
-    # -------------------------------------------------------------------------------------------
-    # Open a srcML archive for reading from a FILE
-    # Parameter: srcml_file -> A FILE opened for reading
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled, probably not needed for Python
-    #def read_open_FILE(self, srcml_file) :
-    #    check_return(libsrcml.srcml_archive_read_open_FILE(self.archive, srcml_file))
-
-    # -------------------------------------------------------------------------------------------
-    # Open a srcML archive for reading from a file descriptor
-    # Parameter: srcml_fd -> A file descriptor opened for reading
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled, probably not needed for Python
-    #def read_open_fd(self, srcml_fd) :
-    #    check_return(libsrcml.srcml_archive_read_open_fd(self.archive, srcml_fd))
-
-    # -------------------------------------------------------------------------------------------
-    # Open a srcML archive for reading from the opened context, accessed via read and close callbacks
-    # Parameter: context -> An io context
-    # Parameter: read_callback -> A read callback function
-    # Parameter: close_callback -> A close callback function
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled, probably not needed for Python
-    #def read_open_io(self, context, read_callback, close_callback) :
-    #    check_return(libsrcml.srcml_archive_read_open_io(self.archive, context, read_callback, close_callback))
+    def close(self) :
+        libsrcml.srcml_archive_close(self.c_archive)
 
     # -------------------------------------------------------------------------------------------
     # Whether the archive is a single, non-nested unit, or an archive
@@ -234,7 +54,6 @@ class srcml_archive:
     # -------------------------------------------------------------------------------------------
     def is_solitary_unit(self) -> bool:
         return bool(libsrcml.srcml_archive_is_solitary_unit(self.c_archive))
-
 
     # -------------------------------------------------------------------------------------------
     # Enable a single, solitary unit. This is only needed when each source-code file is to be
@@ -559,36 +378,80 @@ class srcml_archive:
         result = libsrcml.srcml_archive_check_extension(self.c_archive, filename.encode())
         return result.decode() if result else None
 
+    # -------------------------------------------------------------------------------------------
+    # Gets the srcdiff revision number that the archive is using for processing.
+    # Return: The srcdiff revision number that the archive is using for processing
+    # -------------------------------------------------------------------------------------------
+    def get_srcdiff_revision() -> int:
+        rev = libsrcml.srcml_archive_get_srcdiff_revision(self.c_archive)
+        if rev == srcDiffRevision.INVALID:
+            raise srcDiffRevisionInvalid()
+        return rev
 
     # -------------------------------------------------------------------------------------------
-    # Create a new srcml_unit tied to the srcml archive
-    # Parameter: archive -> A srcml archive
+    # Set what revision in a srcDiff archive to operate with
+    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def unit_create(self):
-        c_unit = libsrcml.srcml_unit_create(self.c_archive)
-        return srcml_unit(c_unit)
+    def set_srcdiff_revision(revision_number: int) -> None:
+        if type(revision_number) != int:
+            raise srcMLTypeError(self.set_srcdiff_revision,"revision_number",revision_number)
+
+        check_srcml_status(libsrcml.set_srcdiff_revision(self.c_archive, revision_number))
+
+
+
+class srcMLArchiveRead(srcMLArchive):
+    # -------------------------------------------------------------------------------------------
+    # Create a new srcml archive (constructor)
+    # ------------------------------------------------------------------------------------------- 
+    def __init__(self, source: str | File | None = None, string_read_mode: ["srcml","filename",None] = None, arch_ptr: None | int = None):
+        super().__init__(arch_ptr)
+        if string_read_mode != None and string_read_mode != "srcml" and string_read_mode != "filename":
+            raise srcMLTypeError(self.__init__,"string_read_mode",string_read_mode)
+        if type(source) != str and type(source) != File and source != None:
+            raise srcMLTypeError(self.__init__,"source",source)
+        elif type(source) == str and (string_read_mode == "srcml" or "<" in source): # Raw XML String
+            status = libsrcml.srcml_archive_read_open_memory(self.c_archive, source.encode(), len(source))
+        elif type(source) == str: # Other string - check that it is a file path
+            if not Path(filename).is_file():
+                raise FileNotFoundError(filename)
+            status = libsrcml.srcml_archive_read_open_filename(self.c_archive, source.encode())
+        elif type(source) == File: # File
+            status  = libsrcml.srcml_archive_read_open_fd(self.c_archive,source.fileno())
+        elif source == None: # None, created fron Clone
+            status = srcMLStatus.OK
+        else:
+            raise ValueError("The provided source value is an incorrect type.")
+        check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
-    # Read the next unit header from the archive
-    # Return: The read srcml_unit, with header information only, on success
-    # Return: NULL on failure
-    # TODO: Disabled for now. Need to check if this even exists in C
+    # Clones the setup of the archive
+    # Return: The cloned archive
     # -------------------------------------------------------------------------------------------
-    #def read_unit_header(self) -> SRCML_UNIT:
-    #    c_unit = libsrcml.srcml_archive_read_unit_header(self.c_archive)
-    #
-    #    if c_unit != None :
-    #        return srcml_unit(None, c_unit)
-    #    return None
+    def clone(archive: srcMLArchive, source: str | File | None = None, string_read_mode: ["srcml","filename",None] = None):
+        if not isinstance(archive, srcMLArchive):
+            raise srcMLTypeError(srcMLArchiveRead.clone, "archive", archive, inheritance_flag=True)
+        return srcMLArchiveRead(source, string_read_mode, libsrcml.srcml_archive_clone(archive.c_archive))
+
+
+    # -------------------------------------------------------------------------------------------
+    # Free a srcml archive that was previously allocated (destructor)
+    # Note: The archive must be reallocated/re-created to use again
+    # Note: Special case for Read Archives, clearing the transforms before destruction
+    # -------------------------------------------------------------------------------------------
+    def __del__(self) :
+        if self.c_archive != 0 and self.c_archive != None:
+            self.clear_transforms()
+            libsrcml.srcml_archive_free(self.c_archive)
 
     # -------------------------------------------------------------------------------------------
     # Read the next unit from the archive
     # Return: The read srcml_unit on success
     # Return: NULL on failure
     # -------------------------------------------------------------------------------------------
-    def read_unit(self) -> SRCML_UNIT | None:
+    def read_unit(self) -> srcMLUnit | None:
         c_unit = libsrcml.srcml_archive_read_unit(self.c_archive)
-        return srcml_unit(c_unit) if c_unit else None
+        return srcMLUnit(c_unit) if c_unit else None
 
     # -------------------------------------------------------------------------------------------
     # Skip the next unit from the archive
@@ -770,10 +633,10 @@ class srcml_archive:
     # Transformations are cleared.
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def unit_apply_transforms(self, unit: srcml_unit, res: srcml_transform_result) -> None:
-        if type(unit) != srcml_unit:
+    def unit_apply_transforms(self, unit: srcMLUnit, res: srcMLTransformResult) -> None:
+        if type(unit) != srcMLUnit:
             raise srcMLTypeError(self.unit_apply_transforms,"unit",unit)
-        if type(res) != srcml_transform_result:
+        if type(res) != srcMLTransformResult:
             raise srcMLTypeError(self.unit_apply_transforms,"res",res)
         #print("BEF",res.c_res)
         check_srcml_status(libsrcml.srcml_unit_apply_transforms(self.c_archive,unit.c_unit, pointer(res.c_res)))
@@ -783,26 +646,104 @@ class srcml_archive:
     # Remove all transformations from archive.
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def clear_transforms() -> None:
+    def clear_transforms(self) -> None:
         check_srcml_status(libsrcml.srcml_clear_transforms(self.c_archive))
 
-    # -------------------------------------------------------------------------------------------
-    # Gets the srcdiff revision number that the archive is using for processing.
-    # Return: The srcdiff revision number that the archive is using for processing
-    # -------------------------------------------------------------------------------------------
-    def get_srcdiff_revision() -> int:
-        rev = libsrcml.srcml_archive_get_srcdiff_revision(self.c_archive)
-        if rev == srcDiffRevision.INVALID:
-            raise srcDiffRevisionInvalid()
-        return rev
+
+
+class srcMLArchiveWrite(srcMLArchive):
+    def __init__(self, out: str | File | None = None, arch_ptr: None | int = None):
+        super().__init__(arch_ptr)
+        if type(out) != str and type(out) != File and out != None:
+            raise srcMLTypeError(self.__init__,"out",out)
+        elif type(out) == str:
+            #self.output_type = "FILENAME"
+            status = libsrcml.srcml_archive_write_open_filename(self.c_archive, out.encode())
+            
+        elif type(out) == File:
+            #self.output_type = "FILE"
+            status = libsrcml.srcml_archive_write_open_fd(self.c_archive,out.fileno())
+        elif out == None: # None, for cloning
+            status = srcMLStatus.OK
+        check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
-    # Set what revision in a srcDiff archive to operate with
+    # Clones the setup of the archive
+    # Return: The cloned archive
+    # -------------------------------------------------------------------------------------------
+    def clone(archive: srcMLArchive, out: str | File | None = None):
+        if not isinstance(archive, srcMLArchive):
+            raise srcMLTypeError(srcMLArchiveWrite.clone, "archive", archive, inheritance_flag=True)
+        return srcMLArchiveWrite(out, libsrcml.srcml_archive_clone(archive.c_archive))
+
+    # -------------------------------------------------------------------------------------------
+    # Create a new srcml_unit tied to the srcml archive
+    # Parameter: archive -> A srcml archive
+    # -------------------------------------------------------------------------------------------
+    def unit_create(self):
+        c_unit = libsrcml.srcml_unit_create(self.c_archive)
+        return srcMLUnit(c_unit)
+
+    # -------------------------------------------------------------------------------------------
+    # Append the srcml unit to the srcml archive
+    # Parameter: unit -> A srcml unit to output
+    # Note: Can not mix with by element mode
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def set_srcdiff_revision(revision_number: int) -> None:
-        if type(revision_number) != int:
-            raise srcMLTypeError(self.set_srcdiff_revision,"revision_number",revision_number)
+    def write_unit(self, unit: srcMLUnit) :
+        status = libsrcml.srcml_archive_write_unit(self.c_archive, unit.c_unit)
+        check_srcml_status(status)
 
-        check_srcml_status(libsrcml.set_srcdiff_revision(self.c_archive, revision_number))
+    # -------------------------------------------------------------------------------------------
+    # Append the string to the srcml archive
+    # Parameter: s -> String to write
+    # Parameter: len -> Length of the string to write
+    # Note: Can not mix with by element mode
+    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
+    # -------------------------------------------------------------------------------------------
+    def write_string(self, s: str) -> None:
+        if type(s) != str:
+            raise srcMLTypeError(self.write_string,"s",s)
+        
+        status = libsrcml.srcml_archive_write_string(self.c_archive, s.encode(), len(s))
+        check_srcml_status(status)
 
+
+
+class srcMLArchiveWriteString(srcMLArchiveWrite):
+    def __init__(self, arch_ptr: None | int = None):
+        super(srcMLArchiveWrite, self).__init__(arch_ptr)
+        self.buffer = c_char_p()
+        self.size = c_size_t()
+        self.closed = False
+        status = libsrcml.srcml_archive_write_open_memory(self.c_archive, pointer(self.buffer), pointer(self.size))
+        check_srcml_status(status)
+
+    # -------------------------------------------------------------------------------------------
+    # Clones the setup of the archive
+    # Return: The cloned archive
+    # -------------------------------------------------------------------------------------------
+    def clone(archive: srcMLArchive):
+        if not isinstance(archive, srcMLArchive):
+            raise srcMLTypeError(srcMLArchiveWriteString.clone, "archive", archive, inheritance_flag=True)
+        return srcMLArchiveWriteString(libsrcml.srcml_archive_clone(archive.c_archive))
+
+    # -------------------------------------------------------------------------------------------
+    # Close a srcml archive opened using archive.read_open_*() or archive.write_open_*()
+    # Note: Special close for srcMLArchiveWriteString
+    #       Sets a closed flag and allows for the return of the buffer content
+    # Return: str containing output
+    # -------------------------------------------------------------------------------------------
+    def close(self) -> str:
+        libsrcml.srcml_archive_close(self.c_archive)
+        self.closed = True
+        return self.get_output_string()
+
+    # -------------------------------------------------------------------------------------------
+    # Get the output string of a closed srcMLArchiveWriteString
+    # Return: str containing output
+    # -------------------------------------------------------------------------------------------
+    def get_output_string(self) -> str:
+        if not self.closed:
+            raise IOError("srcMLArchiveWriteString needs to be closed before accessing output string")
+        return self.buffer.value.decode().strip()

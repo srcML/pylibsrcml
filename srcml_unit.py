@@ -1,15 +1,12 @@
 from .globals import libsrcml
 from .exceptions import srcMLTypeError, srcMLInvalidConstruction, check_srcml_status
 
-from typing import ForwardRef
 from ctypes import pointer, c_char_p, c_size_t
 
-SRCML_UNIT = ForwardRef("srcml_unit")
-SRCML_ARCHIVE = ForwardRef("srcml_archive")
-
-class srcml_unit:
-    def __init__(self, unit_ptr: int):
+class srcMLUnit:
+    def __init__(self, unit_ptr: int, freeable: bool = True):
         self.c_unit = unit_ptr
+        self.is_freeable = freeable
 
     # -------------------------------------------------------------------------------------------
     # Clone the setup of an existing unit
@@ -17,9 +14,9 @@ class srcml_unit:
     # Return: The cloned unit
     # TODO: This may cause a memory leak
     # -------------------------------------------------------------------------------------------
-    def clone(self) -> SRCML_UNIT:
+    def clone(self):
         copy_ptr = libsrcml.srcml_unit_clone(self.c_unit)
-        copy = srcml_unit(copy_ptr)
+        copy = srcMLUnit(copy_ptr)
         return copy
 
     # -------------------------------------------------------------------------------------------
@@ -43,9 +40,7 @@ class srcml_unit:
     # Free an allocated unit (void srcml_unit_free(struct srcml_unit*))
     # -------------------------------------------------------------------------------------------
     def __del__(self) -> None:
-        print("In Unit Del")
-        print("DELPTR",self.c_unit,hex(self.c_unit))
-        if self.c_unit != 0 and self.c_unit != None:
+        if self.c_unit != 0 and self.c_unit != None and self.is_freeable:
             libsrcml.srcml_unit_free(self.c_unit)
 
     # -------------------------------------------------------------------------------------------

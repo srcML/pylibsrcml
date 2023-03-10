@@ -7,6 +7,6 @@ from .values import *
 from .utility_funcs import *
 from .convenience_funcs import *
 from .exceptions import *
-from .srcml_unit import srcml_unit
-from .srcml_transform_result import srcml_transform_result
-from .srcml_archive import srcml_archive
+from .srcml_unit import srcMLUnit
+from .srcml_transform_result import srcMLTransformResult
+from .srcml_archive import srcMLArchiveRead, srcMLArchiveWrite, srcMLArchiveWriteString
