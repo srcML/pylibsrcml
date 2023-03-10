@@ -70,7 +70,7 @@ string_xsl = """<xsl:stylesheet
 with open("copy.xsl",'r') as file:
     copy = file.read()
 with open("copy.xsl",'r') as file:
-    inlang = file.read()
+    setlanguage = file.read()
 with open("schema.rng",'r') as file:
     schema = file.read()
 
@@ -324,7 +324,270 @@ assert s == oarchive.get_output_string()
 # xslt_memory
 ################################################# 1
 iarchive = pylibsrcml.srcMLArchiveRead(srcml)
-iarchive.append_transform_xslt_memory()
+iarchive.append_transform_xslt_memory(copy)
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml
+assert s == oarchive.get_output_string()
+assert srcml == oarchive.get_output_string()
+################################################# 2
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+iarchive.append_transform_xslt_memory(copy)
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_full
+assert s == oarchive.get_output_string()
+assert srcml_full == oarchive.get_output_string()
+################################################# 3
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_a)
+iarchive.append_transform_xslt_memory(copy)
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_a
+assert s == oarchive.get_output_string()
+assert srcml_a == oarchive.get_output_string()
+################################################# 4
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_b)
+iarchive.append_transform_xslt_memory(copy)
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_b
+assert s == oarchive.get_output_string()
+assert srcml_b == oarchive.get_output_string()
+################################################# 4
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+iarchive.append_transform_xslt_memory(setlanguage)
+iarchive.append_transform_param("language",'"Python"')
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+print(s)
+#print("|")
+#print(srcml_full_python)
+
+assert s == srcml_full_python
+assert s == oarchive.get_output_string()
+assert srcml_full_python == oarchive.get_output_string()
+################################################# 5
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+iarchive.append_transform_xslt_memory(setlanguage)
+iarchive.append_transform_param("language",'"Python"')
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_full_python
+assert s == oarchive.get_output_string()
+assert srcml_full_python == oarchive.get_output_string()
+#################################################
+
+
+#################################################
+# xslt_file
+################################################# 1
+iarchive = pylibsrcml.srcMLArchiveRead(srcml)
+with open("copy.xsl") as file:
+    iarchive.append_transform_xslt_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml
+assert s == oarchive.get_output_string()
+assert srcml == oarchive.get_output_string()
+################################################# 2
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+with open("copy.xsl") as file:
+    iarchive.append_transform_xslt_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_full
+assert s == oarchive.get_output_string()
+assert srcml_full == oarchive.get_output_string()
+################################################# 3
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_a)
+with open("copy.xsl") as file:
+    iarchive.append_transform_xslt_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_a
+assert s == oarchive.get_output_string()
+assert srcml_a == oarchive.get_output_string()
+################################################# 4
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_b)
+with open("copy.xsl") as file:
+    iarchive.append_transform_xslt_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_b
+assert s == oarchive.get_output_string()
+assert srcml_b == oarchive.get_output_string()
+################################################# 5
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+with open("copy.xsl") as file:
+    iarchive.append_transform_xslt_file(file)
+iarchive.append_transform_param("language",'"Python"')
+
+oarchive = pylibsrcml.srcMLArchiveWriteString.clone(iarchive)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_full_python
+assert s == oarchive.get_output_string()
+assert srcml_full_python == oarchive.get_output_string()
+#################################################
+
+
+#################################################
+# xslt string
+################################################# 1
+iarchive = srcMLArchiveRead(srcml_full)
+iarchive.append_transform_xslt_memory(string_xsl)
+
+unit = iarchive.read_unit()
+result = pylibsrcml.srcMLTransformResult()
+iarchive.unit_apply_transforms(unit,result)
+
+assert result.get_type() == pylibsrcml.srcMLResult.STRING
+assert result.get_string() == "srcML"
+
+iarchive.close()
 
 """
 #################################################
