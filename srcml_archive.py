@@ -404,8 +404,12 @@ class srcMLArchiveRead(srcMLArchive):
     # -------------------------------------------------------------------------------------------
     # Create a new srcml archive (constructor)
     # ------------------------------------------------------------------------------------------- 
-    def __init__(self, source: str | File | None = None, string_read_mode: ["srcml","filename",None] = None, arch_ptr: None | int = None):
-        super().__init__(arch_ptr)
+    def __init__(self, source: str | File | None = None, string_read_mode: ["srcml","filename",None] = None, *, clone_from: srcMLArchive | None = None):
+        if not isinstance(clone_from,srcMLArchive) and clone_from != None:
+            raise srcMLTypeError(self.__init__, "clone_from", clone_from, inheritance_flag=True)
+
+        super().__init__(None if clone_from == None else libsrcml.srcml_archive_clone(clone_from.c_archive))
+
         if string_read_mode != None and string_read_mode != "srcml" and string_read_mode != "filename":
             raise srcMLTypeError(self.__init__,"string_read_mode",string_read_mode)
         if type(source) != str and type(source) != File and source != None:
@@ -421,17 +425,17 @@ class srcMLArchiveRead(srcMLArchive):
         elif source == None: # None, created fron Clone
             status = srcMLStatus.OK
         else:
-            raise ValueError("The provided source value is an incorrect type.")
+            raise ValueError("The provided source value is an incorrect format.")
         check_srcml_status(status)
 
-    # -------------------------------------------------------------------------------------------
-    # Clones the setup of the archive
-    # Return: The cloned archive
-    # -------------------------------------------------------------------------------------------
-    def clone(archive: srcMLArchive, source: str | File | None = None, string_read_mode: ["srcml","filename",None] = None):
-        if not isinstance(archive, srcMLArchive):
-            raise srcMLTypeError(srcMLArchiveRead.clone, "archive", archive, inheritance_flag=True)
-        return srcMLArchiveRead(source, string_read_mode, libsrcml.srcml_archive_clone(archive.c_archive))
+    # # -------------------------------------------------------------------------------------------
+    # # Clones the setup of the archive
+    # # Return: The cloned archive
+    # # -------------------------------------------------------------------------------------------
+    # def clone(archive: srcMLArchive, source: str | File | None = None, string_read_mode: ["srcml","filename",None] = None):
+    #     if not isinstance(archive, srcMLArchive):
+    #         raise srcMLTypeError(srcMLArchiveRead.clone, "archive", archive, inheritance_flag=True)
+    #     return srcMLArchiveRead(source, string_read_mode, libsrcml.srcml_archive_clone(archive.c_archive))
 
 
     # -------------------------------------------------------------------------------------------
@@ -631,16 +635,14 @@ class srcMLArchiveRead(srcMLArchive):
     # Apply appended transformations inorder added and consecutively.
     # Intermediate results are stored in a temporary file.
     # Transformations are cleared.
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
+    # Return: The srcMLTransformResult containing the changed units
     # -------------------------------------------------------------------------------------------
-    def unit_apply_transforms(self, unit: srcMLUnit, res: srcMLTransformResult) -> None:
+    def unit_apply_transforms(self, unit: srcMLUnit) -> srcMLTransformResult:
         if type(unit) != srcMLUnit:
             raise srcMLTypeError(self.unit_apply_transforms,"unit",unit)
-        if type(res) != srcMLTransformResult:
-            raise srcMLTypeError(self.unit_apply_transforms,"res",res)
-        #print("BEF",res.c_res)
+        res = srcMLTransformResult()
         check_srcml_status(libsrcml.srcml_unit_apply_transforms(self.c_archive,unit.c_unit, pointer(res.c_res)))
-        #print("AFT",res.c_res)
+        return res
 
     # -------------------------------------------------------------------------------------------
     # Remove all transformations from archive.
@@ -652,29 +654,30 @@ class srcMLArchiveRead(srcMLArchive):
 
 
 class srcMLArchiveWrite(srcMLArchive):
-    def __init__(self, out: str | File | None = None, arch_ptr: None | int = None):
-        super().__init__(arch_ptr)
+    def __init__(self, out: str | File | None = None, clone_from: srcMLArchive | None = None):
+        if not isinstance(clone_from,srcMLArchive) and clone_from != None:
+            raise srcMLTypeError(self.__init__, "clone_from", clone_from, inheritance_flag=True)
+
+        super().__init__(None if clone_from == None else libsrcml.srcml_archive_clone(clone_from.c_archive))
+        
         if type(out) != str and type(out) != File and out != None:
             raise srcMLTypeError(self.__init__,"out",out)
         elif type(out) == str:
-            #self.output_type = "FILENAME"
             status = libsrcml.srcml_archive_write_open_filename(self.c_archive, out.encode())
-            
         elif type(out) == File:
-            #self.output_type = "FILE"
             status = libsrcml.srcml_archive_write_open_fd(self.c_archive,out.fileno())
         elif out == None: # None, for cloning
             status = srcMLStatus.OK
         check_srcml_status(status)
 
-    # -------------------------------------------------------------------------------------------
-    # Clones the setup of the archive
-    # Return: The cloned archive
-    # -------------------------------------------------------------------------------------------
-    def clone(archive: srcMLArchive, out: str | File | None = None):
-        if not isinstance(archive, srcMLArchive):
-            raise srcMLTypeError(srcMLArchiveWrite.clone, "archive", archive, inheritance_flag=True)
-        return srcMLArchiveWrite(out, libsrcml.srcml_archive_clone(archive.c_archive))
+    # # -------------------------------------------------------------------------------------------
+    # # Clones the setup of the archive
+    # # Return: The cloned archive
+    # # -------------------------------------------------------------------------------------------
+    # def clone(archive: srcMLArchive, out: str | File | None = None):
+    #     if not isinstance(archive, srcMLArchive):
+    #         raise srcMLTypeError(srcMLArchiveWrite.clone, "archive", archive, inheritance_flag=True)
+    #     return srcMLArchiveWrite(out, libsrcml.srcml_archive_clone(archive.c_archive))
 
     # -------------------------------------------------------------------------------------------
     # Create a new srcml_unit tied to the srcml archive
@@ -711,22 +714,26 @@ class srcMLArchiveWrite(srcMLArchive):
 
 
 class srcMLArchiveWriteString(srcMLArchiveWrite):
-    def __init__(self, arch_ptr: None | int = None):
-        super(srcMLArchiveWrite, self).__init__(arch_ptr)
+    def __init__(self, *, clone_from: srcMLArchive | None = None):
+        if not isinstance(clone_from,srcMLArchive) and clone_from != None:
+            raise srcMLTypeError(self.__init__, "clone_from", clone_from, inheritance_flag=True)
+
+        super(srcMLArchiveWrite, self).__init__(None if clone_from == None else libsrcml.srcml_archive_clone(clone_from.c_archive))
+
         self.buffer = c_char_p()
         self.size = c_size_t()
         self.closed = False
         status = libsrcml.srcml_archive_write_open_memory(self.c_archive, pointer(self.buffer), pointer(self.size))
         check_srcml_status(status)
 
-    # -------------------------------------------------------------------------------------------
-    # Clones the setup of the archive
-    # Return: The cloned archive
-    # -------------------------------------------------------------------------------------------
-    def clone(archive: srcMLArchive):
-        if not isinstance(archive, srcMLArchive):
-            raise srcMLTypeError(srcMLArchiveWriteString.clone, "archive", archive, inheritance_flag=True)
-        return srcMLArchiveWriteString(libsrcml.srcml_archive_clone(archive.c_archive))
+    # # -------------------------------------------------------------------------------------------
+    # # Clones the setup of the archive
+    # # Return: The cloned archive
+    # # -------------------------------------------------------------------------------------------
+    # def clone(archive: srcMLArchive):
+    #     if not isinstance(archive, srcMLArchive):
+    #         raise srcMLTypeError(srcMLArchiveWriteString.clone, "archive", archive, inheritance_flag=True)
+    #     return srcMLArchiveWriteString(libsrcml.srcml_archive_clone(archive.c_archive))
 
     # -------------------------------------------------------------------------------------------
     # Close a srcml archive opened using archive.read_open_*() or archive.write_open_*()

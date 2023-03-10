@@ -7,7 +7,7 @@ class srcMLStatus:
     INVALID_INPUT = 3 # Return status indicating that there is some problem with the input
     INVALID_IO_OPERATION = 4 # Return status indicating an invalid read I/O operation (such as write on read only archive)
     IO_ERROR = 5 # Return status indicating that there is some problem with the input
-    UNITIALIZED_UNIT = 6 # Return status indicating an unitialized unit
+    UNINITIALIZED_UNIT = 6 # Return status indicating an unitialized unit
     UNSET_LANGUAGE = 7 # Return status indicating an unset language
     NO_TRANSFORMATION = 8 # Return status indicating there are no transformations
 
