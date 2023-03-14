@@ -69,7 +69,7 @@ string_xsl = """<xsl:stylesheet
 
 with open("copy.xsl",'r') as file:
     copy = file.read()
-with open("copy.xsl",'r') as file:
+with open("setlanguage.xsl",'r') as file:
     setlanguage = file.read()
 with open("schema.rng",'r') as file:
     schema = file.read()
@@ -408,10 +408,6 @@ oarchive.write_unit(result.get_unit(0))
 iarchive.close()
 s = oarchive.close()
 
-print(s)
-#print("|")
-#print(srcml_full_python)
-
 assert s == srcml_full_python
 assert s == oarchive.get_output_string()
 assert srcml_full_python == oarchive.get_output_string()
@@ -527,7 +523,7 @@ assert s == oarchive.get_output_string()
 assert srcml_b == oarchive.get_output_string()
 ################################################# 5
 iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
-with open("copy.xsl") as file:
+with open("setlanguage.xsl") as file:
     iarchive.append_transform_xslt_file(file)
 iarchive.append_transform_param("language",'"Python"')
 
@@ -554,7 +550,7 @@ assert srcml_full_python == oarchive.get_output_string()
 #################################################
 # xslt string
 ################################################# 1
-iarchive = srcMLArchiveRead(srcml_full)
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
 iarchive.append_transform_xslt_memory(string_xsl)
 
 unit = iarchive.read_unit()
