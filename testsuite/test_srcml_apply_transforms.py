@@ -560,6 +560,389 @@ assert result.get_type() == pylibsrcml.srcMLResult.STRING
 assert result.get_string() == "srcML"
 
 iarchive.close()
+#################################################
+
+
+#################################################
+# relaxng_filename
+################################################# 1
+iarchive = pylibsrcml.srcMLArchiveRead(srcml)
+iarchive.append_transform_relaxng_filename("schema.rng")
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml
+################################################# 2
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+iarchive.append_transform_relaxng_filename("schema.rng")
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_full
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_full
+################################################# 3
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_a)
+iarchive.append_transform_relaxng_filename("schema.rng")
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_a
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_a
+################################################# 4
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_b)
+iarchive.append_transform_relaxng_filename("schema.rng")
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_b
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_b
+#################################################
+
+
+#################################################
+# relaxng_memory
+################################################# 1
+iarchive = pylibsrcml.srcMLArchiveRead(srcml)
+iarchive.append_transform_relaxng_memory(schema)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml
+################################################# 2
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+iarchive.append_transform_relaxng_memory(schema)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_full
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_full
+################################################# 3
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_a)
+iarchive.append_transform_relaxng_memory(schema)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_a
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_a
+################################################# 4
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_b)
+iarchive.append_transform_relaxng_memory(schema)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_b
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_b
+#################################################
+
+
+#################################################
+# relaxng_file
+################################################# 1
+iarchive = pylibsrcml.srcMLArchiveRead(srcml)
+with open("schema.rng",'r') as file:
+    iarchive.append_transform_relaxng_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml
+################################################# 2
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+with open("schema.rng",'r') as file:
+    iarchive.append_transform_relaxng_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_full
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_full
+################################################# 3
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_a)
+with open("schema.rng",'r') as file:
+    iarchive.append_transform_relaxng_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_a
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_a
+################################################# 4
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_b)
+with open("schema.rng",'r') as file:
+    iarchive.append_transform_relaxng_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_b
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_b
+#################################################
+
+
+#################################################
+# all
+################################################# 1
+iarchive = pylibsrcml.srcMLArchiveRead(srcml)
+iarchive.append_transform_xpath("//src:unit")
+iarchive.append_transform_xslt_memory(copy)
+with open("copy.xsl",'r') as file:
+    iarchive.append_transform_xslt_file(file)
+iarchive.append_transform_relaxng_filename("schema.rng")
+iarchive.append_transform_relaxng_memory(schema)
+with open("schema.rng",'r') as file:
+    iarchive.append_transform_relaxng_file(file)
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml
+################################################# 2
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_full)
+iarchive.append_transform_xpath("//src:unit")
+iarchive.append_transform_xslt_filename("copy.xsl")
+iarchive.append_transform_xslt_memory(copy)
+with open("copy.xsl",'r') as file:
+    iarchive.append_transform_xslt_file(file)
+
+iarchive.append_transform_relaxng_filename("schema.rng")
+iarchive.append_transform_relaxng_memory(schema)
+with open("schema.rng",'r') as file:
+    iarchive.append_transform_relaxng_file(file)
+
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_full
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_full
+################################################# 3
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_a)
+iarchive.append_transform_xpath("//src:unit")
+iarchive.append_transform_xslt_filename("copy.xsl")
+iarchive.append_transform_xslt_memory(copy)
+with open("copy.xsl",'r') as file:
+    iarchive.append_transform_xslt_file(file)
+
+iarchive.append_transform_relaxng_filename("schema.rng")
+iarchive.append_transform_relaxng_memory(schema)
+with open("schema.rng",'r') as file:
+    iarchive.append_transform_relaxng_file(file)
+
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_a
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_a
+################################################# 4
+iarchive = pylibsrcml.srcMLArchiveRead(srcml_b)
+iarchive.append_transform_xpath("//src:unit")
+iarchive.append_transform_xslt_filename("copy.xsl")
+iarchive.append_transform_xslt_memory(copy)
+with open("copy.xsl",'r') as file:
+    iarchive.append_transform_xslt_file(file)
+
+iarchive.append_transform_relaxng_filename("schema.rng")
+iarchive.append_transform_relaxng_memory(schema)
+with open("schema.rng",'r') as file:
+    iarchive.append_transform_relaxng_file(file)
+
+oarchive = pylibsrcml.srcMLArchiveWriteString(clone_from = iarchive)
+
+unit = iarchive.read_unit()
+result = iarchive.unit_apply_transforms(unit)
+
+assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.get_unit_size() == 1
+assert (not result.get_unit(0)) == False
+
+oarchive.write_unit(result.get_unit(0))
+
+iarchive.close()
+s = oarchive.close()
+
+assert s == srcml_b
+assert oarchive.get_output_string() == s
+assert oarchive.get_output_string() == srcml_b
+#################################################
+
 
 """
 #################################################

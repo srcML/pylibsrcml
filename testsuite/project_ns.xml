@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<s:unit xmlns:s="http://www.srcML.org/srcML/src">
+
+<s:unit language="C++" filename="a.cpp"><s:expr_stmt><s:expr><s:name>a</s:name></s:expr>;</s:expr_stmt>
+</s:unit>
+
+<s:unit language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
+</s:unit>
+
+</s:unit>

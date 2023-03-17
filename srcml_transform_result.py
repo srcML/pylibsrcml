@@ -48,13 +48,36 @@ class srcMLTransformResult:
         return srcMLUnit(rtn,False)
 
     # -------------------------------------------------------------------------------------------
+    # Return: True if the result type is UNITS
+    # -------------------------------------------------------------------------------------------
+    def is_unit_result(self) -> bool:
+        return self.get_type() == srcMLResult.UNITS
+
+    # -------------------------------------------------------------------------------------------
+    # Return: The list of units in the result
+    # -------------------------------------------------------------------------------------------
+    def get_units(self) -> list[srcMLUnit]:
+        if self.get_type() != srcMLResult.UNITS:
+            raise srcMLInvalidResultType()
+        array = []
+        for i in range(self.get_unit_size()):
+            array.append(self.get_unit(i))
+        return array
+
+    # -------------------------------------------------------------------------------------------
     # Return: The trasnformation result string
     # -------------------------------------------------------------------------------------------
-    def get_string(self) -> str | None:
+    def get_string(self) -> str:
         if self.get_type() != srcMLResult.STRING:
             raise srcMLInvalidResultType()
         rtn = libsrcml.srcml_transform_get_string(self.c_res.value)
-        return rtn.decode() if rtn else None
+        return rtn.decode() if rtn else ""
+
+    # -------------------------------------------------------------------------------------------
+    # Return: True if the result type is STRING
+    # -------------------------------------------------------------------------------------------
+    def is_string_result(self) -> bool:
+        return self.get_type() == srcMLResult.STRING
 
     # -------------------------------------------------------------------------------------------
     # Return: The transformation result number
@@ -65,9 +88,37 @@ class srcMLTransformResult:
         return libsrcml.srcml_transform_get_number(self.c_res.value)
 
     # -------------------------------------------------------------------------------------------
+    # Return: True if the result type is NUMBER
+    # -------------------------------------------------------------------------------------------
+    def is_number_result(self) -> bool:
+        return self.get_type() == srcMLResult.NUMBER
+
+    # -------------------------------------------------------------------------------------------
     # Return: The transformation result number
     # -------------------------------------------------------------------------------------------
     def get_bool(self) -> bool:
         if self.get_type() != srcMLResult.BOOLEAN:
             raise srcMLInvalidResultType()
         return bool(libsrcml.srcml_transform_get_bool(self.c_res.value))
+
+    # -------------------------------------------------------------------------------------------
+    # Return: True if the result type is BOOLEAN
+    # -------------------------------------------------------------------------------------------
+    def is_bool_result(self) -> bool:
+        return self.get_type() == srcMLResult.BOOLEAN
+
+    # -------------------------------------------------------------------------------------------
+    # Return: The result, regardless of type
+    # -------------------------------------------------------------------------------------------
+    def get_value(self) -> list[srcMLUnit] | str | float | bool | None:
+        type = self.get_type()
+        if type == srcMLResult.UNITS:
+            return self.get_units()
+        elif type == srcMLResult.STRING:
+            return self.get_string()
+        elif type == srcMLResult.NUMBER:
+            return self.get_number()
+        elif type == srcMLResult.BOOLEAN:
+            return self.get_bool()
+        else:
+            return None

@@ -7,6 +7,8 @@ from .srcml_transform_result import srcMLTransformResult
 from io import TextIOWrapper as File
 from pathlib import Path
 
+import os
+
 from ctypes import pointer, c_char_p, c_size_t
 
 class srcMLArchive:
@@ -235,7 +237,7 @@ class srcMLArchive:
     def set_url(self, url: str) -> None :
         if type(url) != str:
             raise srcMLTypeError(self.set_url,"url",url)
-        
+
         status = libsrcml.srcml_archive_set_url(self.c_archive, url.encode())
         check_srcml_status(status)
 
@@ -244,11 +246,12 @@ class srcMLArchive:
     # Parameter: version -> A version string
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def set_version(self, version) :
-        if version != None :
-            version = str.encode(version)
+    def set_version(self, version: str) -> None :
+        if type(version) != str:
+            raise srcMLTypeError(self.set_version,"version",version)
 
         status = libsrcml.srcml_archive_set_version(self.c_archive, version.encode())
+        check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
     # Return: The currently default XML encoding, or NULL
@@ -382,7 +385,7 @@ class srcMLArchive:
     # Gets the srcdiff revision number that the archive is using for processing.
     # Return: The srcdiff revision number that the archive is using for processing
     # -------------------------------------------------------------------------------------------
-    def get_srcdiff_revision() -> int:
+    def get_srcdiff_revision(self) -> int:
         rev = libsrcml.srcml_archive_get_srcdiff_revision(self.c_archive)
         if rev == srcDiffRevision.INVALID:
             raise srcDiffRevisionInvalid()
@@ -392,11 +395,11 @@ class srcMLArchive:
     # Set what revision in a srcDiff archive to operate with
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def set_srcdiff_revision(revision_number: int) -> None:
+    def set_srcdiff_revision(self,revision_number: int) -> None:
         if type(revision_number) != int:
             raise srcMLTypeError(self.set_srcdiff_revision,"revision_number",revision_number)
 
-        check_srcml_status(libsrcml.set_srcdiff_revision(self.c_archive, revision_number))
+        check_srcml_status(libsrcml.srcml_archive_set_srcdiff_revision(self.c_archive, revision_number))
 
 
 
@@ -404,24 +407,27 @@ class srcMLArchiveRead(srcMLArchive):
     # -------------------------------------------------------------------------------------------
     # Create a new srcml archive (constructor)
     # ------------------------------------------------------------------------------------------- 
-    def __init__(self, source: str | File | None = None, string_read_mode: ["srcml","filename",None] = None, *, clone_from: srcMLArchive | None = None):
+    def __init__(self, source: str | File | None = None, string_read_mode: ["source","filename",None] = None, *, clone_from: srcMLArchive | None = None):
         if not isinstance(clone_from,srcMLArchive) and clone_from != None:
             raise srcMLTypeError(self.__init__, "clone_from", clone_from, inheritance_flag=True)
 
+        self._internal_source = source # save source to try to prevent C issues
+
         super().__init__(None if clone_from == None else libsrcml.srcml_archive_clone(clone_from.c_archive))
 
-        if string_read_mode != None and string_read_mode != "srcml" and string_read_mode != "filename":
+        if string_read_mode != None and string_read_mode != "source" and string_read_mode != "filename":
             raise srcMLTypeError(self.__init__,"string_read_mode",string_read_mode)
         if type(source) != str and type(source) != File and source != None:
             raise srcMLTypeError(self.__init__,"source",source)
-        elif type(source) == str and (string_read_mode == "srcml" or "<" in source): # Raw XML String
+        elif type(source) == str and (string_read_mode == "source" or "<" in source): # Raw XML String
             status = libsrcml.srcml_archive_read_open_memory(self.c_archive, source.encode(), len(source))
         elif type(source) == str: # Other string - check that it is a file path
-            if not Path(filename).is_file():
-                raise FileNotFoundError(filename)
+            #if not Path(source).is_file():
+            #    raise FileNotFoundError(source)
             status = libsrcml.srcml_archive_read_open_filename(self.c_archive, source.encode())
         elif type(source) == File: # File
             status  = libsrcml.srcml_archive_read_open_fd(self.c_archive,source.fileno())
+            #source.close()
         elif source == None: # None, created fron Clone
             status = srcMLStatus.OK
         else:
@@ -714,7 +720,7 @@ class srcMLArchiveWrite(srcMLArchive):
 
 
 class srcMLArchiveWriteString(srcMLArchiveWrite):
-    def __init__(self, *, clone_from: srcMLArchive | None = None):
+    def __init__(self, clone_from: srcMLArchive | None = None):
         if not isinstance(clone_from,srcMLArchive) and clone_from != None:
             raise srcMLTypeError(self.__init__, "clone_from", clone_from, inheritance_flag=True)
 

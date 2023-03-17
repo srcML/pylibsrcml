@@ -8,7 +8,6 @@ class srcMLNotFoundError(Exception):
 # Class representing an error for when an invalid type is passed to a pylibsrcml function
 class srcMLTypeError(Exception):
     def __init__(self, func: "function", arg: str, val, *, inheritance_flag = False):
-        print(func.__annotations__)
         if not inheritance_flag:
             msg = f"{func.__name__} requires that parameter `{arg}` be {str(func.__annotations__[arg])} (not {str(type(val))})"
         else:
@@ -21,6 +20,7 @@ class srcMLInvalidConstruction(Exception):
 
 class srcMLException(Exception):
     def __init__(self,error_code):
+        self.error_code = error_code
         match error_code:
             case srcMLStatus.ERROR:
                 error_string = "srcMLStatus.ERROR: General srcML Error occured"
@@ -30,6 +30,8 @@ class srcMLException(Exception):
                 error_string = "srcMLStatus.INVALID_INPUT: The provided input was invalid"
             case srcMLStatus.INVALID_IO_OPERATION:
                 error_string = "srcMLStatus.INVALID_IO_OPERATION: Unable to execute read I/O operation (input might be read-only)"
+            case srcMLStatus.IO_ERROR:
+                error_string = "srcMLStatus.IO_ERROR: Unable to open provided file"
             case srcMLStatus.UNINITIALIZED_UNIT:
                 error_string = "srcMLStatus.UNINITIALIZED_UNIT: Unit is uninitialized"
             case srcMLStatus.UNSET_LANGUAGE:

@@ -1,10 +1,4 @@
-::NEED TO TALK ABOUT:
-
-Talk about clone
-
-
-
-Should the user ever really need to make a Transform Result?
+scrml_archive_read_open closes the file itself, meaning when it is closed in Python an error occurs. 
 
 
 

@@ -146,8 +146,12 @@
 **int srcml_transform_get_bool(struct srcml_transform_result* result);
 &&int srcml_transform_free(struct srcml_transform_result* result); // NOTE: Turned into `__del__`
 &&int srcml_clear_transforms(struct srcml_archive* archive); // NOTE: Under ARCHIVE instead
-// IDEA - get_units func, returns list of all units as opposed to 1 at a time
-// IDEA - get_value func, automatically returns whatever type the original used
+!!def get_units(self) -> list(srcMLUnit):
+!!def is_unit_result(self) -> bool:
+!!def is_string_result(self) -> bool:
+!!def is_number_result(self) -> bool:
+!!def is_bool_result(self) -> bool:
+!!def get_value(self) -> list[srcMLUnit] | str | float | bool | None:
 
 // UNIT
 !!__init__(self, unit_ptr) // NEW: Creates a srcml_unit from a C pointer value.

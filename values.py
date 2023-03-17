@@ -11,6 +11,14 @@ class srcMLStatus:
     UNSET_LANGUAGE = 7 # Return status indicating an unset language
     NO_TRANSFORMATION = 8 # Return status indicating there are no transformations
 
+class srcMLLanguage:
+    C = "C"
+    CXX = "C++"
+    CPP = "C++"
+    CSHARP = "C#"
+    JAVA = "Java"
+    XML = "xml"
+
 class srcMLOption:
     NO_XML_DECL = 1<<1 # Do not issue an XML declaration (default: include XML declaration
     POSITION = 1<<2 # Include line/column position attributes
@@ -18,6 +26,21 @@ class srcMLOption:
     CPP_TEXT_ELSE = 1<<4 # Leave as text preprocessor else parts (default: markup)
     CPP_MARKUP_IF0 = 1<<5 # Markup preprocessor @code #if 0 @endcode sections (default: leave as text)
     STORE_ENCODING = 1<<6 # Encode the original source encoding as an attribute
+
+    NAMESPACE_DECL = 1<<8
+    XPATH_TOTAL = 1<<9
+    OPTION_LINE = 1<<10
+    DEBUG = 1<<11
+    FRAGMENT = 1<<12
+    CPP_DECLARED = 1<<13
+    ARCHIVE = 1<<14
+    HASH = 1<<15
+
+class srcMLArchiveType:
+    INAVLID = 0
+    RW = 1
+    READ = 2
+    WRITE = 3
 
 class SourceOutputEOL:
     AUTO = 0 # Source-code end of line determined automatically
@@ -37,3 +60,5 @@ class srcDiffRevision:
     ORIGINAL = 0
     MODIFIED = 1
     INVALID = 2
+
+
