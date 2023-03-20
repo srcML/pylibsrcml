@@ -226,7 +226,7 @@ class srcMLUnit:
         if type(src_buffer) != bytes and type(src_buffer) != str:
             raise srcMLTypeError(self.parse_memory,"src_buffer",src_buffer)
         if type(src_buffer) == str:
-            src_buffer = srcml_unit.encode()
+            src_buffer = src_buffer.encode()
 
         status = libsrcml.srcml_unit_parse_memory(self.c_unit, src_buffer, len(src_buffer))
         check_srcml_status(status)

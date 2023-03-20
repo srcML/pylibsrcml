@@ -1,11 +1,11 @@
 from .globals import libsrcml
 from .exceptions import srcMLTypeError, srcDiffRevisionInvalid, check_srcml_status
-from .values import srcDiffRevision
+from .values import srcDiffRevision, srcMLStatus
 from .srcml_unit import srcMLUnit
 from .srcml_transform_result import srcMLTransformResult
 
 from io import TextIOWrapper as File
-from pathlib import Path
+#from pathlib import Path
 
 import os
 
@@ -387,8 +387,8 @@ class srcMLArchive:
     # -------------------------------------------------------------------------------------------
     def get_srcdiff_revision(self) -> int:
         rev = libsrcml.srcml_archive_get_srcdiff_revision(self.c_archive)
-        if rev == srcDiffRevision.INVALID:
-            raise srcDiffRevisionInvalid()
+        #if rev == srcDiffRevision.INVALID:
+        #    raise srcDiffRevisionInvalid()
         return rev
 
     # -------------------------------------------------------------------------------------------
@@ -658,20 +658,20 @@ class srcMLArchiveRead(srcMLArchive):
 
 
 class srcMLArchiveWrite(srcMLArchive):
-    def __init__(self, out: str | File | None = None, clone_from: srcMLArchive | None = None):
+    def __init__(self, out: str | File, clone_from: srcMLArchive | None = None):
         if not isinstance(clone_from,srcMLArchive) and clone_from != None:
             raise srcMLTypeError(self.__init__, "clone_from", clone_from, inheritance_flag=True)
 
         super().__init__(None if clone_from == None else libsrcml.srcml_archive_clone(clone_from.c_archive))
         
-        if type(out) != str and type(out) != File and out != None:
+        if type(out) != str and type(out) != File:
             raise srcMLTypeError(self.__init__,"out",out)
         elif type(out) == str:
             status = libsrcml.srcml_archive_write_open_filename(self.c_archive, out.encode())
         elif type(out) == File:
             status = libsrcml.srcml_archive_write_open_fd(self.c_archive,out.fileno())
-        elif out == None: # None, for cloning
-            status = srcMLStatus.OK
+        #elif out == None: # None, for cloning
+        #    status = srcMLStatus.OK
         check_srcml_status(status)
 
     # # -------------------------------------------------------------------------------------------
@@ -697,7 +697,9 @@ class srcMLArchiveWrite(srcMLArchive):
     # Note: Can not mix with by element mode
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def write_unit(self, unit: srcMLUnit) :
+    def write_unit(self, unit: srcMLUnit) -> None:
+        if type(unit) != srcMLUnit:
+            raise srcMLTypeError(self.write_unit,"unit",unit)
         status = libsrcml.srcml_archive_write_unit(self.c_archive, unit.c_unit)
         check_srcml_status(status)
 
@@ -757,4 +759,4 @@ class srcMLArchiveWriteString(srcMLArchiveWrite):
     def get_output_string(self) -> str:
         if not self.closed:
             raise IOError("srcMLArchiveWriteString needs to be closed before accessing output string")
-        return self.buffer.value.decode().strip()
+        return self.buffer.value.decode()

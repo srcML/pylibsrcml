@@ -48,10 +48,10 @@ def set_xml_encoding(encoding: str) -> None:
 # Parameter: language -> A supported source-code language
 # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
 # -------------------------------------------------------------------------------------------
-def set_language(language: str) -> None:
-    if type(language) != str:
+def set_language(language: str | None) -> None:
+    if type(language) != str and language != None:
         raise srcMLTypeError(set_language,"language",language)
-    status = libsrcml.srcml_set_language(language.encode())
+    status = libsrcml.srcml_set_language(language.encode() if language != None else language)
     check_srcml_status(status)
 
 # -------------------------------------------------------------------------------------------
@@ -165,9 +165,9 @@ def register_file_extension(extension: str, language: str) -> None:
 # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
 # -------------------------------------------------------------------------------------------
 def register_namespace(prefix: str, ns: str) -> None:
-    if type(extension) != str:
+    if type(prefix) != str:
         raise srcMLTypeError(register_namespace,"prefix",prefix)
-    if type(language) != str:
+    if type(ns) != str:
         raise srcMLTypeError(register_namespace,"ns",ns)
     status = libsrcml.srcml_register_namespace(prefix.encode(),ns.encode())
     check_srcml_status(status)

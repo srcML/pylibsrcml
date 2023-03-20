@@ -230,9 +230,79 @@ archive.close()
 #################################################
 
 
-
+#################################################
+# srcml_archive_register_namespace
 ################################################# 1
 archive = pylibsrcml.srcMLArchive()
+try:
+    archive.register_namespace(1,"bar")
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+################################################# 2
+archive = pylibsrcml.srcMLArchive()
+try:
+    archive.register_namespace("foo",1)
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+################################################# 3
+archive = pylibsrcml.srcMLArchive()
+archive.register_namespace("foo","http://www.srcML.org/srcML/src")
+assert archive.get_namespace_size() == 1
+assert archive.get_namespace_prefix(0) == "foo"
+assert archive.get_namespace_uri(0) == "http://www.srcML.org/srcML/src"
+assert archive.get_uri_from_prefix("foo") == "http://www.srcML.org/srcML/src"
+assert archive.get_prefix_from_uri("http://www.srcML.org/srcML/src") == "foo"
+archive.close()
+################################################# 4
+archive = pylibsrcml.srcMLArchive()
+archive.register_namespace("foo","bar")
+assert archive.get_namespace_size() == 2
+assert archive.get_namespace_prefix(1) == "foo"
+assert archive.get_namespace_uri(1) == "bar"
+assert archive.get_uri_from_prefix("foo") == "bar"
+assert archive.get_prefix_from_uri("bar") == "foo"
+archive.close()
+################################################# 5
+archive = pylibsrcml.srcMLArchive()
+archive.register_namespace("foo1","bar")
+archive.register_namespace("foo2","http://www.srcML.org/srcML/test")
+assert archive.get_namespace_size() == 3
+assert archive.get_namespace_prefix(1) == "foo1"
+assert archive.get_namespace_uri(1) == "bar"
+assert archive.get_uri_from_prefix("foo1") == "bar"
+assert archive.get_prefix_from_uri("bar") == "foo1"
+assert archive.get_namespace_prefix(2) == "foo2"
+assert archive.get_namespace_uri(2) == "http://www.srcML.org/srcML/test"
+assert archive.get_uri_from_prefix("foo2") == "http://www.srcML.org/srcML/test"
+assert archive.get_prefix_from_uri("http://www.srcML.org/srcML/test") == "foo2"
+archive.close()
+################################################# 6
+archive = pylibsrcml.srcMLArchive()
+archive.register_namespace("foo1","bar")
+archive.register_namespace("foo2","bar")
+assert archive.get_namespace_size() == 2
+assert archive.get_namespace_prefix(1) == "foo2"
+assert archive.get_namespace_uri(1) == "bar"
+assert archive.get_uri_from_prefix("foo2") == "bar"
+assert archive.get_prefix_from_uri("bar") == "foo2"
+archive.close()
+#################################################
 
+
+#################################################
+# srcml_archive_set_srcdiff_revision
+################################################# 1
+archive = pylibsrcml.srcMLArchive()
+try:
+    archive.set_srcdiff_revision("foo")
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+################################################# 2
+archive = pylibsrcml.srcMLArchive()
+archive.set_srcdiff_revision(pylibsrcml.srcDiffRevision.ORIGINAL)
+assert archive.get_srcdiff_revision() == pylibsrcml.srcDiffRevision.ORIGINAL
 archive.close()
 #################################################

@@ -1,10 +1,3 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<unit xmlns="http://www.srcML.org/srcML/src" url="test" filename="project" version="1">
-
-<unit language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
-</unit>
-
-<unit language="C++" filename="b.cpp"><expr_stmt><expr><name>b</name></expr>;</expr_stmt>
-</unit>
-
+<unit xmlns="http://www.srcML.org/srcML/src" revision="1.0.0" language="C++" filename="a.cpp" hash="56f54d1636dfec63c3e1586e5e4bdc9a455bb9f6"><decl_stmt><decl><type><name>int</name></type> <name>a</name></decl>;</decl_stmt>
 </unit>

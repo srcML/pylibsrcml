@@ -294,10 +294,7 @@ archive.close()
 # srcml_archive_get_srcdiff_revision
 ################################################# 1
 archive = pylibsrcml.srcMLArchive()
-try:
-    archive.get_srcdiff_revision()
-except pylibsrcml.srcDiffRevisionInvalid:
-    pass
+assert archive.get_srcdiff_revision() == pylibsrcml.srcDiffRevision.INVALID
 archive.close()
 ################################################# 2
 archive = pylibsrcml.srcMLArchive()

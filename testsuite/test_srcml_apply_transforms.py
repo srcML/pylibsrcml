@@ -5,12 +5,14 @@ SRCML_VERSION_STRING = pylibsrcml.version_string()
 
 srcml_a = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
-</unit>"""
+</unit>
+"""
 
 
 srcml_b = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
-</s:unit>"""
+</s:unit>
+"""
 
 
 srcml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -19,7 +21,8 @@ srcml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <unit revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>
 
-</unit>"""
+</unit>
+"""
 
 
 srcml_a_after = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -28,7 +31,8 @@ srcml_a_after = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <unit revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>
 
-</unit>"""
+</unit>
+"""
 
 
 srcml_b_after = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -37,7 +41,8 @@ srcml_b_after = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <s:unit revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>
 
-</s:unit>"""
+</s:unit>
+"""
 
 
 srcml_full = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -46,7 +51,8 @@ srcml_full = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <s:unit revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>
 
-</s:unit>"""
+</s:unit>
+"""
 
 
 srcml_full_python = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -55,7 +61,8 @@ srcml_full_python = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <s:unit revision="{SRCML_VERSION_STRING}" language="Python" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>
 
-</s:unit>"""
+</s:unit>
+"""
 
 
 string_xsl = """<xsl:stylesheet
@@ -942,11 +949,3 @@ assert s == srcml_b
 assert oarchive.get_output_string() == s
 assert oarchive.get_output_string() == srcml_b
 #################################################
-
-
-"""
-#################################################
-archive = pylibsrcml.srcml_archive()
-archive.close()
-#################################################
-"""

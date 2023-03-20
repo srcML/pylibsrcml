@@ -12,6 +12,7 @@ class srcMLStatus:
     NO_TRANSFORMATION = 8 # Return status indicating there are no transformations
 
 class srcMLLanguage:
+    NONE = None
     C = "C"
     CXX = "C++"
     CPP = "C++"
