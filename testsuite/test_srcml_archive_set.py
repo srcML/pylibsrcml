@@ -202,8 +202,32 @@ archive.close()
 #################################################
 # srcml_archive_register_file_extension
 ################################################# 1
-
-
+archive = pylibsrcml.srcMLArchive()
+try:
+    archive.register_file_extension(1,"C++")
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+################################################# 2
+archive = pylibsrcml.srcMLArchive()
+try:
+    archive.register_file_extension("foo",1)
+except pylibsrcml.srcMLTypeError:
+    pass
+archive.close()
+################################################# 3
+archive = pylibsrcml.srcMLArchive()
+try:
+    archive.register_file_extension("foo","C+")
+except pylibsrcml.srcMLException as e:
+    assert e.error_code == pylibsrcml.srcMLStatus.INVALID_INPUT
+archive.close()
+################################################# 4
+archive = pylibsrcml.srcMLArchive()
+archive.register_file_extension("foo","C++")
+assert archive.check_extension("main.foo") == "C++"
+archive.close()
+#################################################
 
 
 

@@ -407,29 +407,27 @@ class srcMLArchiveRead(srcMLArchive):
     # -------------------------------------------------------------------------------------------
     # Create a new srcml archive (constructor)
     # ------------------------------------------------------------------------------------------- 
-    def __init__(self, source: str | File | None = None, string_read_mode: ["source","filename",None] = None, *, clone_from: srcMLArchive | None = None):
+    def __init__(self, source: str, string_read_mode: ["source","filename",None] = None, *, clone_from: srcMLArchive | None = None):
         if not isinstance(clone_from,srcMLArchive) and clone_from != None:
             raise srcMLTypeError(self.__init__, "clone_from", clone_from, inheritance_flag=True)
 
-        self._internal_source = source # save source to try to prevent C issues
+        #self._internal_source = source # save source to try to prevent C issues
 
         super().__init__(None if clone_from == None else libsrcml.srcml_archive_clone(clone_from.c_archive))
 
         if string_read_mode != None and string_read_mode != "source" and string_read_mode != "filename":
             raise srcMLTypeError(self.__init__,"string_read_mode",string_read_mode)
-        if type(source) != str and type(source) != File and source != None:
+        
+        if type(source) != str:
             raise srcMLTypeError(self.__init__,"source",source)
         elif type(source) == str and (string_read_mode == "source" or "<" in source): # Raw XML String
             status = libsrcml.srcml_archive_read_open_memory(self.c_archive, source.encode(), len(source))
         elif type(source) == str: # Other string - check that it is a file path
-            #if not Path(source).is_file():
-            #    raise FileNotFoundError(source)
             status = libsrcml.srcml_archive_read_open_filename(self.c_archive, source.encode())
-        elif type(source) == File: # File
-            status  = libsrcml.srcml_archive_read_open_fd(self.c_archive,source.fileno())
-            #source.close()
-        elif source == None: # None, created fron Clone
-            status = srcMLStatus.OK
+        # NOTE - Disabled due to it automatically closing the file.
+        # elif type(source) == File: # File
+        #     status = libsrcml.srcml_archive_read_open_fd(self.c_archive,source.fileno())
+        #     #source.close()
         else:
             raise ValueError("The provided source value is an incorrect format.")
         check_srcml_status(status)
