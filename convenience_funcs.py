@@ -342,8 +342,8 @@ def get_namespace_size() -> int:
 # Return: The prefix, where empty namespace is an empty string
 # Return: 0 if given an invalid position
 # -------------------------------------------------------------------------------------------
-def get_namespace_prefix() -> str:
-    result = libsrcml.srcml_get_namespace_prefix()
+def get_namespace_prefix(pos: int) -> str:
+    result = libsrcml.srcml_get_namespace_prefix(pos)
     return result.decode() if result else None
 
 # -------------------------------------------------------------------------------------------

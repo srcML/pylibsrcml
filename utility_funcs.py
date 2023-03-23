@@ -55,6 +55,8 @@ def get_language_list_size() -> int:
 def get_language_from_list_pos(pos: int) -> str | None:
     if type(pos) != int:
         raise srcMLTypeError(get_language_from_list_pos,"pos",pos)
+    if pos < 0 or pos > get_language_list_size()-1:
+        raise IndexError("Language index out of bounds")
     result = libsrcml.srcml_get_language_list(pos)
     return result.decode() if result else None
 

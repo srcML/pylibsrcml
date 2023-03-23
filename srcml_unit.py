@@ -93,7 +93,7 @@ class srcMLUnit:
     # Return: Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
     def set_timestamp(self, timestamp: str) -> None :
-        if type(version) != str:
+        if type(timestamp) != str:
             raise srcMLTypeError(self.set_timestamp,"timestamp",timestamp)
         status = libsrcml.srcml_unit_set_timestamp(self.c_unit, timestamp.encode())
         check_srcml_status(status)
@@ -226,9 +226,22 @@ class srcMLUnit:
         if type(src_buffer) != bytes and type(src_buffer) != str:
             raise srcMLTypeError(self.parse_memory,"src_buffer",src_buffer)
         if type(src_buffer) == str:
-            src_buffer = src_buffer.encode()
+            src_buffer = src_buffer.encode() if self.get_src_encoding() == None else src_buffer.encode(self.get_src_encoding())
+
+
 
         status = libsrcml.srcml_unit_parse_memory(self.c_unit, src_buffer, len(src_buffer))
+        check_srcml_status(status)
+
+    # -------------------------------------------------------------------------------------------
+    # Convert the contents of the source-code file to srcML and store in the unit
+    # Parameter: src_file -> A Python file opened for reading
+    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
+    # -------------------------------------------------------------------------------------------
+    def parse_file(self, src_file: File) -> None:
+        if type(src_file) != File:
+            raise srcMLTypeError(self.parse_file,"src_file",src_file)
+        status = libsrcml.srcml_unit_unparse_fd(self.c_unit,src_file.fileno())
         check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------

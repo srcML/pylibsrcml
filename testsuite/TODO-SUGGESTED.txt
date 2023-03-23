@@ -1,4 +1,4 @@
-scrml_archive_read_open closes the file itself, meaning when it is closed in Python an error occurs. 
+src_bom has some issues
 
 
 

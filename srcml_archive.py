@@ -401,6 +401,14 @@ class srcMLArchive:
 
         check_srcml_status(libsrcml.srcml_archive_set_srcdiff_revision(self.c_archive, revision_number))
 
+    # -------------------------------------------------------------------------------------------
+    # Create a new srcml_unit tied to the srcml archive
+    # Parameter: archive -> A srcml archive
+    # -------------------------------------------------------------------------------------------
+    def unit_create(self):
+        c_unit = libsrcml.srcml_unit_create(self.c_archive)
+        return srcMLUnit(c_unit)
+
 
 
 class srcMLArchiveRead(srcMLArchive):
@@ -682,14 +690,6 @@ class srcMLArchiveWrite(srcMLArchive):
     #     if not isinstance(archive, srcMLArchive):
     #         raise srcMLTypeError(srcMLArchiveWrite.clone, "archive", archive, inheritance_flag=True)
     #     return srcMLArchiveWrite(out, libsrcml.srcml_archive_clone(archive.c_archive))
-
-    # -------------------------------------------------------------------------------------------
-    # Create a new srcml_unit tied to the srcml archive
-    # Parameter: archive -> A srcml archive
-    # -------------------------------------------------------------------------------------------
-    def unit_create(self):
-        c_unit = libsrcml.srcml_unit_create(self.c_archive)
-        return srcMLUnit(c_unit)
 
     # -------------------------------------------------------------------------------------------
     # Append the srcml unit to the srcml archive

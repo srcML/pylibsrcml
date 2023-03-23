@@ -74,4 +74,8 @@ with open("inta.cpp",'r') as file:
 pylibsrcml.srcml("project_full.xml","inta.cpp")
 with open("inta.cpp",'r') as file:
     assert file.read() == src
-#################################################
+################################################# 9
+try:
+    pylibsrcml.srcml("foo.c","foo.xml")
+except pylibsrcml.srcMLException as e:
+    assert e.error_code == pylibsrcml.srcMLStatus.IO_ERROR
