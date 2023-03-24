@@ -12,3 +12,6 @@ assert unit.get_hash() == None
 assert unit.get_srcml() == None
 assert unit.get_srcml_outer() == None
 assert unit.get_srcml_inner() == None
+
+
+archive.close()

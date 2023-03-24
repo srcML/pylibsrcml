@@ -47,6 +47,7 @@ unit.set_language("C")
 unit.parse_filename("project.c")
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 2
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.enable_solitary_unit()
@@ -57,6 +58,7 @@ unit.parse_filename("project.foo")
 archive.write_unit(unit)
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 3
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.enable_solitary_unit()
@@ -65,6 +67,7 @@ archive.set_language("C")
 unit = archive.unit_create()
 unit.parse_filename("project.foo")
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 4
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -77,6 +80,7 @@ unit.set_language("C++")
 unit.parse_filename("project.foo")
 
 assert unit.get_srcml_outer() == srcml_full
+archive.close()
 ################################################# 5
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -86,6 +90,7 @@ unit.set_language("C")
 unit.parse_filename("project.foo")
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 6
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -97,6 +102,7 @@ unit.set_version("1")
 unit.parse_filename("project.c")
 
 assert unit.get_srcml_outer() == srcml_full
+archive.close()
 ################################################# 7
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -110,6 +116,7 @@ unit.set_version("1")
 unit.parse_filename("project_utf8.cpp")
 
 assert unit.get_srcml() == utf8_srcml
+archive.close()
 ################################################# 8
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -124,6 +131,7 @@ unit.set_version("1")
 unit.parse_filename("project_utf8.cpp")
 
 assert unit.get_srcml() == utf8_srcml
+archive.close()
 ################################################# 9
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -137,6 +145,7 @@ unit.set_version("1")
 unit.parse_filename("project_latin.cpp")
 
 assert unit.get_srcml() == latin_srcml
+archive.close()
 ################################################# 10
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -153,12 +162,14 @@ unit.parse_filename("project_latin.cpp")
 assert unit.get_srcml() == latin_srcml
 
 archive.write_unit(unit)
+archive.close()
 ################################################# 11
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
 unit.parse_filename("project.c")
 
 assert unit.get_timestamp() == None
+archive.close()
 ################################################# 12
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -168,6 +179,7 @@ unit.set_language("C")
 unit.parse_filename("project.c")
 
 assert unit.get_srcml_outer() == srcml_timestamp
+archive.close()
 ################################################# 13
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -175,6 +187,7 @@ unit.set_language("C")
 unit.parse_filename("project.c")
 
 assert unit.get_srcml_outer() == srcml_hash_generated
+archive.close()
 ################################################# 14
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -185,6 +198,7 @@ unit.set_language("C")
 unit.parse_filename("project_bom.c")
 
 assert unit.get_srcml_outer() == srcml_encoding
+archive.close()
 ################################################# 15
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.enable_solitary_unit()
@@ -193,6 +207,7 @@ unit.set_language("C")
 unit.parse_filename("project.c")
 
 assert unit.get_srcml_outer() == srcml_hash
+archive.close()
 ################################################# 16
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -201,6 +216,7 @@ try:
     assert False
 except pylibsrcml.srcMLException as e:
     assert e.error_code == pylibsrcml.srcMLStatus.IO_ERROR
+archive.close()
 ################################################# 17
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -208,6 +224,7 @@ try:
     unit.parse_filename("project.c")
 except:
     assert False
+archive.close()
 ################################################# 18
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -216,6 +233,7 @@ try:
     assert False
 except pylibsrcml.srcMLTypeError:
     pass
+archive.close()
 ################################################# 19
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -224,6 +242,7 @@ try:
     assert False
 except pylibsrcml.srcMLException as e:
     assert e.error_code == pylibsrcml.srcMLStatus.UNSET_LANGUAGE
+archive.close()
 #################################################
 
 
@@ -237,6 +256,7 @@ unit.set_language("C")
 unit.parse_memory(src)
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 2
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -246,6 +266,7 @@ unit.set_language("C")
 unit.parse_memory(src)
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 3
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -255,6 +276,7 @@ unit.set_language("C")
 unit.parse_memory(src)
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 4
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -266,6 +288,7 @@ unit.set_version("1")
 unit.parse_memory(src)
 
 assert unit.get_srcml_outer() == srcml_full
+archive.close()
 ################################################# 5
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -277,6 +300,7 @@ unit.set_version("1")
 unit.parse_memory(src)
 
 assert unit.get_srcml_outer() == srcml_full
+archive.close()
 ################################################# 6
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -289,6 +313,7 @@ unit.set_version("1")
 unit.parse_memory(utf8_src)
 
 assert unit.get_srcml() == utf8_srcml
+archive.close()
 ################################################# 7
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -302,6 +327,7 @@ unit.set_version("1")
 unit.parse_memory(utf8_src)
 
 assert unit.get_srcml() == utf8_srcml
+archive.close()
 ################################################# 8
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -314,6 +340,7 @@ unit.set_version("1")
 unit.parse_memory(latin_src)
 
 assert unit.get_srcml() == latin_srcml
+archive.close()
 ################################################# 9
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -327,6 +354,7 @@ unit.set_version("1")
 unit.parse_memory(latin_src)
 
 assert unit.get_srcml() == latin_srcml
+archive.close()
 ################################################# 10
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -334,6 +362,7 @@ unit.set_language("C")
 unit.parse_memory(src)
 
 assert unit.get_timestamp() == None
+archive.close()
 ################################################# 11
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -343,6 +372,7 @@ unit.set_language("C")
 unit.parse_memory(src)
 
 assert unit.get_srcml_outer() == srcml_timestamp
+archive.close()
 ################################################# 12
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -350,6 +380,7 @@ unit.set_language("C")
 unit.parse_memory(src)
 
 assert unit.get_srcml_outer() == srcml_hash
+archive.close()
 ################################################# 13
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -357,6 +388,7 @@ unit.set_language("C")
 unit.parse_memory(src)
 
 assert unit.get_srcml_outer() == srcml_hash_generated
+archive.close()
 ################################################# 14
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -371,6 +403,7 @@ unit.parse_memory(src_bom)
 # print(srcml_encoding)
 
 # assert unit.get_srcml_outer() == srcml_encoding
+archive.close()
 ################################################# 15
 archive = pylibsrcml.srcMLArchive()
 unit = archive.unit_create()
@@ -380,6 +413,7 @@ try:
     unit.parse_memory(src)
 except:
     assert False
+archive.close()
 ################################################# 16
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -390,6 +424,7 @@ try:
     assert False
 except pylibsrcml.srcMLTypeError:
     pass
+archive.close()
 ################################################# 17
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -398,6 +433,7 @@ unit.set_language("C")
 unit.parse_memory("")
 
 assert unit.get_srcml_outer() == f'<unit revision="{SRCML_VERSION_STRING}" language="C"/>'
+archive.close()
 ################################################# 18
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -407,6 +443,7 @@ try:
     assert False
 except pylibsrcml.srcMLException as e:
     assert e.error_code == pylibsrcml.srcMLStatus.UNSET_LANGUAGE
+archive.close()
 #################################################
 
 
@@ -421,6 +458,7 @@ with open("project.c",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 2
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -431,6 +469,7 @@ with open("project.c",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 3
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -441,6 +480,7 @@ with open("project.c",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml_outer() == srcml
+archive.close()
 ################################################# 4
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -453,6 +493,7 @@ with open("project.c",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml_outer() == srcml_full
+archive.close()
 ################################################# 5
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -465,6 +506,7 @@ with open("project.c",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml_outer() == srcml_full
+archive.close()
 ################################################# 6
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -478,6 +520,7 @@ with open("project_utf8.cpp",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml() == utf8_srcml
+archive.close()
 ################################################# 7
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -492,6 +535,7 @@ with open("project_utf8.cpp",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml() == utf8_srcml
+archive.close()
 ################################################# 8
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -505,6 +549,7 @@ with open("project_latin.cpp",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml() == latin_srcml
+archive.close()
 ################################################# 9
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -519,6 +564,7 @@ with open("project_latin.cpp",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml() == latin_srcml
+archive.close()
 ################################################# 10
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -527,6 +573,7 @@ with open("project.c",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_timestamp() == None
+archive.close()
 ################################################# 11
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -537,6 +584,7 @@ with open("project.c",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml_outer() == srcml_timestamp
+archive.close()
 ################################################# 12
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -547,6 +595,7 @@ with open("project.c",'r') as file:
 # print("|")
 # print("B",srcml_hash_generated)
 # assert unit.get_srcml_outer() == srcml_hash_generated
+archive.close()
 ################################################# 13
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 archive.disable_hash()
@@ -557,6 +606,7 @@ with open("project_bom.c",'r') as file:
     unit.parse_file(file)
 
 assert unit.get_srcml_outer() == srcml_encoding
+archive.close()
 ################################################# 14
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -567,6 +617,7 @@ with open("project.c",'r') as file:
 # print("|")
 # print("B",srcml_hash)
 # assert unit.get_srcml_outer() == srcml_hash
+archive.close()
 ################################################# 15
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -575,6 +626,7 @@ with open("project.c",'r') as file:
     unit.parse_file(file)
 
 # assert unit.get_srcml_outer() == srcml_hash_generated
+archive.close()
 ################################################# 16
 archive = pylibsrcml.srcMLArchive()
 unit = archive.unit_create()
@@ -584,6 +636,7 @@ with open("project.c",'r') as file:
         unit.parse_file(file)
     except:
         assert False
+archive.close()
 ################################################# 17
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -594,6 +647,7 @@ with open("project.c",'r') as file:
         assert False
     except pylibsrcml.srcMLTypeError:
         pass
+archive.close()
 ################################################# 18
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
@@ -603,4 +657,5 @@ with open("project.c",'r') as file:
         assert False
     except pylibsrcml.srcMLException as e:
         assert e.error_code == pylibsrcml.srcMLStatus.UNSET_LANGUAGE
+archive.close()
 #################################################

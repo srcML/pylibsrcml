@@ -40,10 +40,10 @@ class srcMLArchive:
     # Note: The archive must be reallocated/re-created to use again
     # -------------------------------------------------------------------------------------------
     def __del__(self) :
-        print("TOP_ARCH_1")
+        #print("In",type(self), "Del",self.c_archive)
         if self.c_archive != 0 and self.c_archive != None:
             libsrcml.srcml_archive_free(self.c_archive)
-        print("BOT_ARCH_1")
+        #print("Done",type(self), "Del",self.c_archive)
 
     # -------------------------------------------------------------------------------------------
     # Close a srcml archive opened using archive.read_open_*() or archive.write_open_*()
@@ -431,10 +431,8 @@ class srcMLArchiveRead(srcMLArchive):
         if type(source) != str:
             raise srcMLTypeError(self.__init__,"source",source)
         elif type(source) == str and (string_read_mode == "source" or "<" in source): # Raw XML String
-            print("source")
             status = libsrcml.srcml_archive_read_open_memory(self.c_archive, source.encode(), len(source.encode()))
         elif type(source) == str: # Other string - check that it is a file path
-            print("path")
             status = libsrcml.srcml_archive_read_open_filename(self.c_archive, source.encode())
         # NOTE - Disabled due to it automatically closing the file.
         # elif type(source) == File: # File
@@ -460,14 +458,11 @@ class srcMLArchiveRead(srcMLArchive):
     # Note: Special case for Read Archives, clearing the transforms before destruction
     # -------------------------------------------------------------------------------------------
     def __del__(self) :
-        print("TOP_ARCH_2",self.c_archive)
+        #print("In",type(self), "Del",self.c_archive)
         if self.c_archive != 0 and self.c_archive != None:
-            print("A")
             self.clear_transforms()
-            print("B")
             libsrcml.srcml_archive_free(self.c_archive)
-            print("C")
-        print("BOT_ARCH_2")
+        #print("Done",type(self), "Del",self.c_archive)
 
     # -------------------------------------------------------------------------------------------
     # Read the next unit from the archive

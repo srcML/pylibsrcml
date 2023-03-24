@@ -154,6 +154,7 @@ try:
     assert False
 except pylibsrcml.srcMLException as e:
     assert e.error_code == pylibsrcml.srcMLStatus.INVALID_ARGUMENT
+archive.close()
 ################################################# 6
 text = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <unit xmlns="http://www.srcML.org/srcML/src" revision="1.0.0" language="C++">
@@ -176,7 +177,7 @@ unit.set_eol(pylibsrcml.SourceOutputEOL.CR)
 buf = unit.unparse_string()
 assert buf == "\ra;\r"
 
-
+archive.close()
 
 
 """

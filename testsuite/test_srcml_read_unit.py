@@ -96,6 +96,7 @@ srcml_hash_single = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 archive = pylibsrcml.srcMLArchiveRead(srcml)
 unit = archive.read_unit()
 assert unit.get_srcml_outer() == srcml_a
+archive.close()
 ################################################# 2
 archive = pylibsrcml.srcMLArchiveRead(srcml_full)
 unit = archive.read_unit()
@@ -103,6 +104,7 @@ assert unit.get_language() == "C++"
 assert unit.get_filename() == "project"
 assert unit.get_version() == "1"
 assert unit.get_srcml_outer() == srcml_b
+archive.close()
 ################################################# 3
 archive = pylibsrcml.srcMLArchiveRead(srcml_single)
 unit = archive.read_unit()
@@ -111,6 +113,7 @@ assert unit.get_filename() == "project"
 assert archive.get_url() == "test"
 assert unit.get_version() == "1"
 assert unit.get_srcml() == srcml_b_single
+archive.close()
 ################################################# 4
 archive = pylibsrcml.srcMLArchiveRead(srcml_two)
 unit = archive.read_unit()
@@ -127,22 +130,27 @@ assert unit.get_version() == None
 assert unit.get_srcml_outer() == srcml_b_two
 unit = archive.read_unit()
 assert unit == None
+archive.close()
 ################################################# 5
 archive = pylibsrcml.srcMLArchiveRead(srcml_timestamp)
 unit = archive.read_unit()
 assert unit.get_timestamp() == "today"
+archive.close()
 ################################################# 6
 archive = pylibsrcml.srcMLArchiveRead(srcml_timestamp_single)
 unit = archive.read_unit()
 assert unit.get_timestamp() == "today"
+archive.close()
 ################################################# 7
 archive = pylibsrcml.srcMLArchiveRead(srcml_hash)
 unit = archive.read_unit()
 assert unit.get_hash() == "aa2a72b26cf958d8718a2e9bc6b84679a81d54cb"
+archive.close()
 ################################################# 8
 archive = pylibsrcml.srcMLArchiveRead(srcml_hash_single)
 unit = archive.read_unit()
 assert unit.get_hash() == "aa2a72b26cf958d8718a2e9bc6b84679a81d54cb"
+archive.close()
 ################################################# 9
 archive = pylibsrcml.srcMLArchiveRead(srcml)
 unit = archive.read_unit()
@@ -151,6 +159,7 @@ assert unit.get_filename() == "project.c"
 assert archive.get_url() == None
 assert unit.get_version() == None
 assert unit.get_srcml_outer() == srcml_soleunit
+archive.close()
 ################################################# 10
 archive = pylibsrcml.srcMLArchiveRead(srcml_full)
 unit = archive.read_unit()
@@ -159,6 +168,7 @@ assert unit.get_filename() == "project"
 assert archive.get_url() == "test"
 assert unit.get_version() == "1"
 assert unit.get_srcml_inner() == "<s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>\n"
+archive.close()
 ################################################# 11
 archive = pylibsrcml.srcMLArchiveRead(srcml_single)
 unit = archive.read_unit()
@@ -167,6 +177,7 @@ assert unit.get_filename() == "project"
 assert archive.get_url() == "test"
 assert unit.get_version() == "1"
 assert unit.get_srcml_inner() == "<s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>\n"
+archive.close()
 ################################################# 12
 archive = pylibsrcml.srcMLArchiveRead(srcml_two)
 unit = archive.read_unit()
@@ -183,4 +194,5 @@ assert unit.get_version() == None
 assert unit.get_srcml_inner() == "<expr_stmt><expr><name>b</name></expr>;</expr_stmt>\n"
 unit = archive.read_unit()
 assert unit == None
+archive.close()
 #################################################

@@ -1,3 +1,5 @@
+from .exceptions import srcMLNotFoundError
+
 from ctypes import cdll
 from ctypes.util import find_library
 from ctypes import c_int, c_char_p, c_size_t, c_void_p, c_double, CFUNCTYPE

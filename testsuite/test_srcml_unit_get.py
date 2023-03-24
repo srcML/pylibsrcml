@@ -118,3 +118,6 @@ unit.parse_memory("a;")
 
 assert unit.get_srcml() == '<unit xmlns="http://www.srcML.org/srcML/src" revision="1.0.0" language="C++" hash="a301d91aac4aa1ab4e69cbc59cde4b4fff32f2b8"><expr_stmt><expr><name>a</name></expr>;</expr_stmt></unit>'
 #################################################
+
+
+archive.close()

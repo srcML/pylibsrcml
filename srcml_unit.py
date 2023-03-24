@@ -42,10 +42,8 @@ class srcMLUnit:
     # Free an allocated unit (void srcml_unit_free(struct srcml_unit*))
     # -------------------------------------------------------------------------------------------
     def __del__(self) -> None:
-        print("TOP_UNIT")
         if self.c_unit != 0 and self.c_unit != None and self.is_freeable:
             libsrcml.srcml_unit_free(self.c_unit)
-        print("BOT_UNIT")
 
     # -------------------------------------------------------------------------------------------
     # Set the source-code encoding for the srcml unit
@@ -308,11 +306,23 @@ class srcMLUnit:
     # Return: a string containing the unit srcML data
     # -------------------------------------------------------------------------------------------
     def unparse_string(self) -> str :
-        buffer = c_char_p()
-        size = c_size_t()
-        status = libsrcml.srcml_unit_unparse_memory(self.c_unit, pointer(buffer), pointer(size))
+        buffer = self.unparse_memory()
+        # buffer = c_char_p()
+        # size = c_size_t()
+        # status = libsrcml.srcml_unit_unparse_memory(self.c_unit, pointer(buffer), pointer(size))
+        # check_srcml_status(status)
+        return buffer.decode() if self.get_src_encoding() == None else buffer.decode(self.get_src_encoding())
+
+    # -------------------------------------------------------------------------------------------
+    # Convert the srcML in a unit into source code and output to the FILE*
+    # Parameter: ofile -> Python file
+    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
+    # -------------------------------------------------------------------------------------------
+    def unparse_file(self, ofile: File) -> None:
+        if type(ofile) != File:
+            raise srcMLTypeError(self.unparse_file,"ofile",ofile)
+        status = libsrcml.srcml_unit_unparse_fd(self.c_unit, ofile.fileno())
         check_srcml_status(status)
-        return buffer.value.decode() if self.get_src_encoding() == None else buffer.value.decode(self.get_src_encoding())
 
     # -------------------------------------------------------------------------------------------
     # Convert the srcML in a unit into source code and output to the FILE*
@@ -360,6 +370,7 @@ class srcMLUnit:
     # -------------------------------------------------------------------------------------------
     def write_end_unit(self) -> None:
         status = libsrcml.srcml_write_end_unit(self.c_unit)
+        check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
     # Write a start tag for a general element
@@ -368,15 +379,15 @@ class srcMLUnit:
     # Parameter: uri -> URI of the prefix
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def write_start_element(self, prefix: str, name: str, uri: str) -> None:
-        if type(prefix) != str:
+    def write_start_element(self, prefix: str | None, name: str, uri: str | None) -> None:
+        if type(prefix) != str and prefix != None:
             raise srcMLTypeError(self.write_start_element,"prefix",prefix)
         if type(name) != str:
             raise srcMLTypeError(self.write_start_element,"name",name)
-        if type(uri) != str:
+        if type(uri) != str and uri != None:
             raise srcMLTypeError(self.write_start_element,"uri",uri)
         
-        status = libsrcml.srcml_write_start_element(self.c_unit, prefix.encode(), name.encode(), uri.encode())
+        status = libsrcml.srcml_write_start_element(self.c_unit, prefix.encode() if prefix != None else None, name.encode(), uri.encode() if uri != None else None)
         check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
