@@ -3,6 +3,8 @@ from .exceptions import srcMLTypeError, srcMLInvalidConstruction, check_srcml_st
 
 from ctypes import pointer, c_char_p, c_size_t
 
+from io import TextIOWrapper as File
+
 class srcMLUnit:
     def __init__(self, unit_ptr: int, freeable: bool = True):
         self.c_unit = unit_ptr
@@ -40,8 +42,10 @@ class srcMLUnit:
     # Free an allocated unit (void srcml_unit_free(struct srcml_unit*))
     # -------------------------------------------------------------------------------------------
     def __del__(self) -> None:
+        print("TOP_UNIT")
         if self.c_unit != 0 and self.c_unit != None and self.is_freeable:
             libsrcml.srcml_unit_free(self.c_unit)
+        print("BOT_UNIT")
 
     # -------------------------------------------------------------------------------------------
     # Set the source-code encoding for the srcml unit
@@ -168,7 +172,7 @@ class srcMLUnit:
     # Return: The eol for to-src output (unparse), or NULL
     # -------------------------------------------------------------------------------------------
     def get_eol(self) -> int:
-        libsrcml.srcml_unit_get_eol(self.unit)
+        return libsrcml.srcml_unit_get_eol(self.c_unit)
 
     # -------------------------------------------------------------------------------------------
     # Get a complete, valid XML of the srcML from this unit
@@ -241,7 +245,7 @@ class srcMLUnit:
     def parse_file(self, src_file: File) -> None:
         if type(src_file) != File:
             raise srcMLTypeError(self.parse_file,"src_file",src_file)
-        status = libsrcml.srcml_unit_unparse_fd(self.c_unit,src_file.fileno())
+        status = libsrcml.srcml_unit_parse_fd(self.c_unit,src_file.fileno())
         check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
@@ -308,7 +312,7 @@ class srcMLUnit:
         size = c_size_t()
         status = libsrcml.srcml_unit_unparse_memory(self.c_unit, pointer(buffer), pointer(size))
         check_srcml_status(status)
-        return buffer.value.decode()
+        return buffer.value.decode() if self.get_src_encoding() == None else buffer.value.decode(self.get_src_encoding())
 
     # -------------------------------------------------------------------------------------------
     # Convert the srcML in a unit into source code and output to the FILE*

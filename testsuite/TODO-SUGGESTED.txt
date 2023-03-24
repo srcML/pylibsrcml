@@ -1,4 +1,6 @@
-src_bom has some issues
+src_bom has some issues with parse_memory
+
+hash has some issues with parse_file
 
 
 
