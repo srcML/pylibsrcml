@@ -410,7 +410,7 @@ class srcMLUnit:
         if type(uri) != str:
             raise srcMLTypeError(self.write_start_element,"uri",uri)
         
-        status = libsrcml.srcml_write_namespace(self.c_unit, prefix,encode(), uri.encode())
+        status = libsrcml.srcml_write_namespace(self.c_unit, prefix.encode(), uri.encode())
         check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
@@ -421,18 +421,18 @@ class srcMLUnit:
     # Parameter: content -> Value of the attribute
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def write_attribute(self, prefix: str, name: str, uri: str, content: str) -> None :
-        if type(prefix) != str:
+    def write_attribute(self, prefix: str | None, name: str, uri: str | None, content: str) -> None :
+        if type(prefix) != str and prefix != None:
             raise srcMLTypeError(self.write_attribute,"prefix",prefix)
         if type(name) != str:
             raise srcMLTypeError(self.write_attribute,"name",name)
-        if type(uri) != str:
+        if type(uri) != str and uri != None:
             raise srcMLTypeError(self.write_attribute,"uri",uri)
         if type(content) != str:
             raise srcMLTypeError(self.write_attribute,"content",content)
         
 
-        status = libsrcml.srcml_write_attribute(self.c_unit, prefix.encode(), name.encode(), uri.encode(), content.encode())
+        status = libsrcml.srcml_write_attribute(self.c_unit, prefix.encode() if prefix else None, name.encode(), uri.encode() if uri else None, content.encode())
         check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
@@ -444,7 +444,7 @@ class srcMLUnit:
         if type(content) != str:
             raise srcMLTypeError(self.write_string,"content",content)
         
-        status = libsrcml.srcml_write_string(self.unit, content.encode())
+        status = libsrcml.srcml_write_string(self.c_unit, content.encode())
         check_srcml_status(status)
 
    

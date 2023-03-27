@@ -458,11 +458,11 @@ class srcMLArchiveRead(srcMLArchive):
     # Note: Special case for Read Archives, clearing the transforms before destruction
     # -------------------------------------------------------------------------------------------
     def __del__(self) :
-        print("In",type(self), "Del",self.c_archive)
+        # print("In",type(self), "Del",self.c_archive)
         if self.c_archive != 0 and self.c_archive != None:
             self.clear_transforms()
             libsrcml.srcml_archive_free(self.c_archive)
-        print("Done",type(self), "Del",self.c_archive)
+        # print("Done",type(self), "Del",self.c_archive)
 
     # -------------------------------------------------------------------------------------------
     # Read the next unit from the archive

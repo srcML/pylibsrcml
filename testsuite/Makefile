@@ -1,0 +1,21 @@
+tests:
+	python3 test_srcml_append_transform.py
+	python3 test_srcml_apply_transforms.py
+	python3 test_srcml_archive_check_extension.py
+	python3 test_srcml_archive_clone.py
+	python3 test_srcml_archive_create.py
+	python3 test_srcml_archive_get.py
+	python3 test_srcml_archive_read_open.py
+	python3 test_srcml_archive_set.py
+	python3 test_srcml_archive_write_open.py
+	python3 test_srcml_archive_write_unit.py
+	python3 test_srcml_convenience.py
+	python3 test_srcml_global.py
+	python3 test_srcml_global_access.py
+	python3 test_srcml_read_unit.py
+	python3 test_srcml_unit_create.py
+	python3 test_srcml_unit_get.py
+	python3 test_srcml_unit_parse.py
+	python3 test_srcml_unit_set.py
+	python3 test_srcml_unit_unparse.py
+	python3 test_srcml_write_by_element.py
