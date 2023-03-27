@@ -1,4 +1,5 @@
 # srcML Test Output
+test/
 proj*
 *.cpp
 

@@ -4,6 +4,7 @@ SRCML_VERSION_STRING = pylibsrcml.version_string()
 
 src = "a;\n"
 src_bom = "\xEF\xBB\xBFa;\n"
+src_bom_b = b"\xEF\xBB\xBFa;\n"
 utf8_src = "/* \u2713 */\n"
 latin_src = "/* \xfe\xff */\n"
 
@@ -396,13 +397,13 @@ archive.enable_option(pylibsrcml.srcMLOption.STORE_ENCODING)
 unit = archive.unit_create()
 # print("?",unit.get_src_encoding())
 unit.set_language("C")
-unit.parse_memory(src_bom)
-# print("!",unit.get_src_encoding())
-# print(unit.get_srcml_outer())
-# print("|")
-# print(srcml_encoding)
+unit.parse_memory(src_bom_b)
+print("!",unit.get_src_encoding())
+print(unit.get_srcml_outer())
+print("|")
+print(srcml_encoding)
 
-# assert unit.get_srcml_outer() == srcml_encoding
+assert unit.get_srcml_outer() == srcml_encoding
 archive.close()
 ################################################# 15
 archive = pylibsrcml.srcMLArchive()
@@ -611,12 +612,29 @@ archive.close()
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
 unit = archive.unit_create()
 unit.set_language("C")
+
+with open("project.c",'r') as file:
+    data = file.read()
+    for ch in data:
+        print(ch,":",ord(ch))
+
 with open("project.c",'r') as file:
     unit.parse_file(file)
-# print("A",unit.get_srcml_outer())
-# print("|")
-# print("B",srcml_hash)
-# assert unit.get_srcml_outer() == srcml_hash
+
+print("OUTER_TEST")
+for ch in unit.get_srcml_outer():
+    if ord(ch) == ord('\r'):
+        print("FOUND!")
+        break
+else:
+    print("NOT FOUND!")
+
+
+print("\n\n")
+print("A",unit.get_srcml_outer(), len(unit.get_srcml_outer()))
+print("|")
+print("B",srcml_hash, len(srcml_hash))
+assert unit.get_srcml_outer() == srcml_hash
 archive.close()
 ################################################# 15
 archive = pylibsrcml.srcMLArchiveWrite("project.xml")
