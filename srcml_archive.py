@@ -19,6 +19,33 @@ class srcMLArchive:
         if type(arch_ptr) != int and arch_ptr != None:
             raise srcMLTypeError(self.__init__,"arch_ptr",arch_ptr)
         self.c_archive = libsrcml.srcml_archive_create() if type(arch_ptr) != int else arch_ptr
+        self.closed = False
+
+    # -------------------------------------------------------------------------------------------
+    # Free a srcml archive that was previously allocated (destructor)
+    # Note: The archive must be reallocated/re-created to use again
+    # -------------------------------------------------------------------------------------------
+    def __del__(self) :
+        #print("In",type(self), "Del",self.c_archive)
+        if not self.closed:
+            self.close()
+        if self.c_archive != 0 and self.c_archive != None:
+            libsrcml.srcml_archive_free(self.c_archive)
+        #print("Done",type(self), "Del",self.c_archive)
+
+    # -------------------------------------------------------------------------------------------
+    # The enter statement for a context manager
+    # Return: The archive itself, the constructor does the opening
+    # -------------------------------------------------------------------------------------------
+    def __enter__(self) :
+        return self
+
+    # -------------------------------------------------------------------------------------------
+    # The exit statement for a context manager
+    # Closes the Archive automatically.
+    # -------------------------------------------------------------------------------------------
+    def __exit__(self, exc_type, exc_val, exc_tb) :
+        self.close()
 
     # -------------------------------------------------------------------------------------------
     # Provides the code of the last error to occur for the archive
@@ -36,20 +63,12 @@ class srcMLArchive:
         return result.decode() if result else None
 
     # -------------------------------------------------------------------------------------------
-    # Free a srcml archive that was previously allocated (destructor)
-    # Note: The archive must be reallocated/re-created to use again
-    # -------------------------------------------------------------------------------------------
-    def __del__(self) :
-        #print("In",type(self), "Del",self.c_archive)
-        if self.c_archive != 0 and self.c_archive != None:
-            libsrcml.srcml_archive_free(self.c_archive)
-        #print("Done",type(self), "Del",self.c_archive)
-
-    # -------------------------------------------------------------------------------------------
     # Close a srcml archive opened using archive.read_open_*() or archive.write_open_*()
     # -------------------------------------------------------------------------------------------
     def close(self) :
-        libsrcml.srcml_archive_close(self.c_archive)
+        if not self.closed:
+            libsrcml.srcml_archive_close(self.c_archive)
+            self.closed = True
 
     # -------------------------------------------------------------------------------------------
     # Whether the archive is a single, non-nested unit, or an archive
@@ -458,20 +477,49 @@ class srcMLArchiveRead(srcMLArchive):
     # Note: Special case for Read Archives, clearing the transforms before destruction
     # -------------------------------------------------------------------------------------------
     def __del__(self) :
-        # print("In",type(self), "Del",self.c_archive)
         if self.c_archive != 0 and self.c_archive != None:
             self.clear_transforms()
-            libsrcml.srcml_archive_free(self.c_archive)
-        # print("Done",type(self), "Del",self.c_archive)
+        super().__del__()
+
+    # -------------------------------------------------------------------------------------------
+    # iter function for working with for loops
+    # -------------------------------------------------------------------------------------------
+    def __iter__(self):
+        unit = self.read_unit()
+        while unit != None:
+            yield unit
+            unit = self.read_unit()
+
+    # -------------------------------------------------------------------------------------------
+    # Next function for working with for loops
+    # Returns a srcMLUnit
+    # -------------------------------------------------------------------------------------------
+    # def __next__(self):
+    #     unit = self.read_unit()
+    #     if unit == None:
+    #         raise StopIteration
+    #     return unit
 
     # -------------------------------------------------------------------------------------------
     # Read the next unit from the archive
-    # Return: The read srcml_unit on success
+    # Return: The read srcMLUnit on success
     # Return: NULL on failure
     # -------------------------------------------------------------------------------------------
     def read_unit(self) -> srcMLUnit | None:
         c_unit = libsrcml.srcml_archive_read_unit(self.c_archive)
         return srcMLUnit(c_unit) if c_unit else None
+
+    # -------------------------------------------------------------------------------------------
+    # Read the remaining units in the archive
+    # Return: A list of read srcMLUnits on success
+    # -------------------------------------------------------------------------------------------
+    def read_all_units(self) -> list[srcMLUnit]:
+        units = []
+        c_unit = libsrcml.srcml_archive_read_unit(self.c_archive)
+        while c_unit:
+            units.append(srcMLUnit(c_unit))
+            c_unit = libsrcml.srcml_archive_read_unit(self.c_archive)
+        return units
 
     # -------------------------------------------------------------------------------------------
     # Skip the next unit from the archive
@@ -732,7 +780,6 @@ class srcMLArchiveWriteString(srcMLArchiveWrite):
 
         self.buffer = c_char_p()
         self.size = c_size_t()
-        self.closed = False
         status = libsrcml.srcml_archive_write_open_memory(self.c_archive, pointer(self.buffer), pointer(self.size))
         check_srcml_status(status)
 
@@ -752,8 +799,7 @@ class srcMLArchiveWriteString(srcMLArchiveWrite):
     # Return: str containing output
     # -------------------------------------------------------------------------------------------
     def close(self) -> str:
-        libsrcml.srcml_archive_close(self.c_archive)
-        self.closed = True
+        super().close()
         return self.get_output_string()
 
     # -------------------------------------------------------------------------------------------

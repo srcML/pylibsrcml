@@ -32,12 +32,42 @@ class srcMLTransformResult:
     # Return: The number of units in the transformation result
     # -------------------------------------------------------------------------------------------
     def get_unit_size(self) -> int:
+        if self.get_type() != srcMLResult.UNITS:
+            raise srcMLInvalidResultType()
         return libsrcml.srcml_transform_get_unit_size(self.c_res)
+
+    # -------------------------------------------------------------------------------------------
+    # Return: The number of units in the transformation result | identical to get_unit_size
+    # -------------------------------------------------------------------------------------------
+    def __len__(self) -> int:
+        return get_unit_size()
+
+    # -------------------------------------------------------------------------------------------
+    # iter function for working with for loops
+    # -------------------------------------------------------------------------------------------
+    def __iter__(self):
+        if self.get_type() != srcMLResult.UNITS:
+            raise srcMLInvalidResultType()
+        for i in range(self.get_unit_size()):
+            yield self.get_unit(i)
 
     # -------------------------------------------------------------------------------------------
     # Return: The unit at index i
     # -------------------------------------------------------------------------------------------
     def get_unit(self, i: int) -> srcMLUnit:
+        if type(i) != int:
+            raise srcMLTypeError(self.get_unit,"i",i)
+        if self.get_type() != srcMLResult.UNITS:
+            raise srcMLInvalidResultType()
+        rtn = libsrcml.srcml_transform_get_unit(self.c_res.value,i)
+        if rtn == 0:
+            raise srcMLException(srcMLStatus.ERROR)
+        return srcMLUnit(rtn,False)
+
+    # -------------------------------------------------------------------------------------------
+    # Return: The unit at index i | Identical to get_unit
+    # -------------------------------------------------------------------------------------------
+    def __getitem__(self, i: int) -> srcMLUnit:
         if type(i) != int:
             raise srcMLTypeError(self.get_unit,"i",i)
         if self.get_type() != srcMLResult.UNITS:

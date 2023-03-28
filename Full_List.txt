@@ -118,6 +118,7 @@
 **const char* srcml_archive_check_extension(const struct srcml_archive* archive, const char* filename);
 --struct srcml_unit* srcml_archive_read_unit_header(struct srcml_archive* archive); // NOTE - cannot find an implementation in libsrcml
 **struct srcml_unit* srcml_archive_read_unit(struct srcml_archive* archive);
+!!read_units(self) -> list(srcMLUnit) // NEW - reads the remaining srcMLUnits in an archive and returns the list
 **int srcml_archive_skip_unit(struct srcml_archive* archive);
 // IDEA - Add generator to allow an archive to be looped through
 **int srcml_append_transform_xpath(struct srcml_archive* archive, const char* xpath_string);
@@ -135,6 +136,9 @@
 !!append_transform_relaxng_file(self, relaxng_file: File) // NOTE - uses srcml_append_transform_relaxng_fd, but takes a TextIOWrapper
 **int srcml_append_transform_param(struct srcml_archive* archive, const char* param_name, const char* param_value);
 **int srcml_append_transform_stringparam(struct srcml_archive* archive, const char* param_name, const char* param_value);
+!!__enter__(self) // NOTE - For python context manager
+!!__exit__(self,exc_type,exc_val,exc_tb) // NOTE - For python context manager
+!!__iter__(self): // NEW - for for looping
 
 // TRANSFORM RESULT
 &&int srcml_unit_apply_transforms(struct srcml_archive* archive, struct srcml_unit* unit, struct srcml_transform_result** result); // NOTE: Under ARCHIVE instead
@@ -147,14 +151,17 @@
 &&int srcml_transform_free(struct srcml_transform_result* result); // NOTE: Turned into `__del__`
 &&int srcml_clear_transforms(struct srcml_archive* archive); // NOTE: Under ARCHIVE instead
 !!def get_units(self) -> list(srcMLUnit):
+!!def __getitem__(self, i: int) -> srcMLUnit:
 !!def is_unit_result(self) -> bool:
 !!def is_string_result(self) -> bool:
 !!def is_number_result(self) -> bool:
 !!def is_bool_result(self) -> bool:
 !!def get_value(self) -> list[srcMLUnit] | str | float | bool | None:
+!!def __iter__(self)
 
 // UNIT
 !!__init__(self, unit_ptr) // NEW: Creates a srcml_unit from a C pointer value.
+!!__str__(self) // NEW: Returns self.get_srcml
 &&struct srcml_unit* srcml_unit_create(struct srcml_archive* archive); // NOTE: Under ARCHIVE instead
 **struct srcml_unit* srcml_unit_clone(const struct srcml_unit* unit);
 **int srcml_unit_error_number(const struct srcml_unit* unit);

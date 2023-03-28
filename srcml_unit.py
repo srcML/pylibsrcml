@@ -16,6 +16,15 @@ class srcMLUnit:
     # Return: The cloned unit
     # TODO: This may cause a memory leak
     # -------------------------------------------------------------------------------------------
+    def __str__(self):
+        rtn = self.get_srcml()
+        return rtn if rtn else ""
+
+    # -------------------------------------------------------------------------------------------
+    # Clone the setup of an existing unit
+    # Parameter: unit -> A srcml unit
+    # Return: The cloned unit
+    # -------------------------------------------------------------------------------------------
     def clone(self):
         copy_ptr = libsrcml.srcml_unit_clone(self.c_unit)
         copy = srcMLUnit(copy_ptr)
