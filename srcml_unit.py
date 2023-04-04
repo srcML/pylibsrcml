@@ -459,5 +459,3 @@ class srcMLUnit:
         
         status = libsrcml.srcml_write_string(self.c_unit, content.encode())
         check_srcml_status(status)
-
-   

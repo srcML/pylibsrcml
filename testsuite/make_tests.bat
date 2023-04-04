@@ -9,6 +9,7 @@ python test_srcml_archive_set.py
 python test_srcml_archive_write_open.py
 python test_srcml_archive_write_unit.py
 python test_srcml_convenience.py
+python test_srcml_for.py
 python test_srcml_global.py
 python test_srcml_global_access.py
 python test_srcml_read_unit.py

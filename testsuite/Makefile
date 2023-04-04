@@ -10,6 +10,7 @@ tests:
 	python3 test_srcml_archive_write_open.py
 	python3 test_srcml_archive_write_unit.py
 	python3 test_srcml_convenience.py
+	python3 test_srcml_for.py
 	python3 test_srcml_global.py
 	python3 test_srcml_global_access.py
 	python3 test_srcml_read_unit.py
