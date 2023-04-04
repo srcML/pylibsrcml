@@ -189,8 +189,10 @@ class srcMLUnit:
     # Return: The standalone unit srcML on success and NULL on failure.
     # -------------------------------------------------------------------------------------------
     def get_srcml(self) -> str | None:
+
         result = libsrcml.srcml_unit_get_srcml(self.c_unit)
-        return result.decode() if result else None
+        code = self.get_src_encoding()
+        return (result.decode(code) if code else result.decode()) if result else None
 
     # -------------------------------------------------------------------------------------------
     # Get a fragment of the srcML from this unit
@@ -202,7 +204,8 @@ class srcMLUnit:
     # -------------------------------------------------------------------------------------------
     def get_srcml_outer(self) -> str | None :
         result = libsrcml.srcml_unit_get_srcml_outer(self.c_unit)
-        return result.decode() if result else None
+        code = self.get_src_encoding()
+        return (result.decode(code) if code else result.decode()) if result else None
 
     # -------------------------------------------------------------------------------------------
     # Get the srcML without the enclosing unit tags
@@ -214,7 +217,8 @@ class srcMLUnit:
     # -------------------------------------------------------------------------------------------
     def get_srcml_inner(self) :
         result = libsrcml.srcml_unit_get_srcml_inner(self.c_unit)
-        return result.decode() if result else None
+        code = self.get_src_encoding()
+        return (result.decode(code) if code else result.decode()) if result else None
 
     # -------------------------------------------------------------------------------------------
     # Convert the contents of the file with the name src_filename to srcML and store in the unit
