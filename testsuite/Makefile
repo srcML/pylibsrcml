@@ -19,4 +19,5 @@ tests:
 	python3 test_srcml_unit_parse.py
 	python3 test_srcml_unit_set.py
 	python3 test_srcml_unit_unparse.py
+	python3 test_srcml_with.py
 	python3 test_srcml_write_by_element.py

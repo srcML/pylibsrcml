@@ -1,5 +1,8 @@
 #from enum import Enum
 
+SRCML_VERSION_NUMBER = 1000
+SRCML_VERSION_STRING = "1.0.0"
+
 class srcMLStatus:
     OK = 0 # Return status indicating no errors
     ERROR = 1 # Return status indicating general errors occurred
@@ -28,14 +31,14 @@ class srcMLOption:
     CPP_MARKUP_IF0 = 1<<5 # Markup preprocessor @code #if 0 @endcode sections (default: leave as text)
     STORE_ENCODING = 1<<6 # Encode the original source encoding as an attribute
 
-    NAMESPACE_DECL = 1<<8
-    XPATH_TOTAL = 1<<9
-    OPTION_LINE = 1<<10
-    DEBUG = 1<<11
-    FRAGMENT = 1<<12
-    CPP_DECLARED = 1<<13
-    ARCHIVE = 1<<14
-    HASH = 1<<15
+    # NAMESPACE_DECL = 1<<8
+    # XPATH_TOTAL = 1<<9
+    # OPTION_LINE = 1<<10
+    # DEBUG = 1<<11
+    # FRAGMENT = 1<<12
+    # CPP_DECLARED = 1<<13
+    # ARCHIVE = 1<<14
+    # HASH = 1<<15
 
 class srcMLArchiveType:
     INAVLID = 0

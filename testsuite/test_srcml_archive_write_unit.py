@@ -1,120 +1,118 @@
 import pylibsrcml
 
-SRCML_VERSION_STRING = pylibsrcml.version_string()
-
-srcml_a = f"""<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+srcml_a = f"""<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>"""
 
-srcml_b = f"""<s:unit revision="{SRCML_VERSION_STRING}" language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
+srcml_b = f"""<s:unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>"""
 
-utf8_srcml_no_xmldecl = f"""<unit revision="{SRCML_VERSION_STRING}" language="C++" url="test" filename="project" version="1"><comment type="block">/* ✓ */</comment>
+utf8_srcml_no_xmldecl = f"""<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" url="test" filename="project" version="1"><comment type="block">/* ✓ */</comment>
 </unit>"""
 
-latin_srcml_no_xmldecl = f"""<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* Ã¾Ã¿ */</comment>
+latin_srcml_no_xmldecl = f"""<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* Ã¾Ã¿ */</comment>
 </unit>"""
 
-srcml_old_uri_a = f"""<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+srcml_old_uri_a = f"""<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>"""
 
 utf8_srcml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" url="test" version="1">
+<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" url="test" version="1">
 
-<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* ✓ */</comment>
+<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* ✓ */</comment>
 </unit>
 
 </unit>
 """
 
 utf8_srcml_latin = f"""<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
-<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" url="test" version="1">
+<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" url="test" version="1">
 
-<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* &#10003; */</comment>
+<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* &#10003; */</comment>
 </unit>
 
 </unit>
 """
 
 latin_srcml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" url="test" version="1">
+<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" url="test" version="1">
 
-<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* Ã¾Ã¿ */</comment>
+<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* Ã¾Ã¿ */</comment>
 </unit>
 
 </unit>
 """
 
 latin_srcml_latin = f"""<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
-<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" url="test" version="1">
+<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" url="test" version="1">
 
-<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* þÿ */</comment>
+<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><comment type="block">/* þÿ */</comment>
 </unit>
 
 </unit>
 """
 
-srcml_a_single_no_xmldecl = f"""<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+srcml_a_single_no_xmldecl = f"""<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>"""
 
 srcml_a_single = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>
 """
 
 srcml_a_archive = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}">
+<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}">
 
-<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>
 
 </unit>
 """
 
-srcml_old_uri_a_single_no_xmldecl = f"""<unit xmlns="http://www.sdml.info/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+srcml_old_uri_a_single_no_xmldecl = f"""<unit xmlns="http://www.sdml.info/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>"""
 
-srcml_first_old_uri_a_single_no_xmldecl  = f"""<unit xmlns="http://www.sdml.info/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+srcml_first_old_uri_a_single_no_xmldecl  = f"""<unit xmlns="http://www.sdml.info/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>"""
 
-srcml_second_old_uri_a_single_no_xmldecl = f"""<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+srcml_second_old_uri_a_single_no_xmldecl = f"""<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>"""
 
-srcml_b_single_no_xmldecl = f"""<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" url="test" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
+srcml_b_single_no_xmldecl = f"""<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" url="test" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>"""
 
 srcml_b_single = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
+<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>
 """
 
 srcml_b_archive = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" url="test" version="1">
+<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" url="test" version="1">
 
-<s:unit revision="{SRCML_VERSION_STRING}" language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
+<s:unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>
 
 </s:unit>
 """
 
 srcml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<unit xmlns="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}">
+<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}">
 
-<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>
 
-<unit revision="{SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
+<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>
 
 </unit>
 """
 
 srcml_ns = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{SRCML_VERSION_STRING}" url="test" version="1">
+<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" url="test" version="1">
 
-<s:unit revision="{SRCML_VERSION_STRING}" language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
+<s:unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>
 
-<s:unit revision="{SRCML_VERSION_STRING}" language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
+<s:unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="b.cpp"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
 </s:unit>
 
 </s:unit>

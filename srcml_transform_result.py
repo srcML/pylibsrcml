@@ -40,7 +40,7 @@ class srcMLTransformResult:
     # Return: The number of units in the transformation result | identical to get_unit_size
     # -------------------------------------------------------------------------------------------
     def __len__(self) -> int:
-        return get_unit_size()
+        return self.get_unit_size()
 
     # -------------------------------------------------------------------------------------------
     # iter function for working with for loops

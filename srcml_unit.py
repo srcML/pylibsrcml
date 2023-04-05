@@ -189,7 +189,6 @@ class srcMLUnit:
     # Return: The standalone unit srcML on success and NULL on failure.
     # -------------------------------------------------------------------------------------------
     def get_srcml(self) -> str | None:
-
         result = libsrcml.srcml_unit_get_srcml(self.c_unit)
         return result.decode() if result else None
 
@@ -240,8 +239,6 @@ class srcMLUnit:
         if type(src_buffer) == str:
             src_buffer = src_buffer.encode() if self.get_src_encoding() == None else src_buffer.encode(self.get_src_encoding())
 
-
-
         status = libsrcml.srcml_unit_parse_memory(self.c_unit, src_buffer, len(src_buffer))
         check_srcml_status(status)
 
@@ -255,35 +252,6 @@ class srcMLUnit:
             raise srcMLTypeError(self.parse_file,"src_file",src_file)
         status = libsrcml.srcml_unit_parse_fd(self.c_unit,src_file.fileno())
         check_srcml_status(status)
-
-    # -------------------------------------------------------------------------------------------
-    # Convert the contents of the source-code FILE* to srcML and store in the unit
-    # Parameter: src_file -> A FILE* opened for reading
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled - there is no FILE* in Python
-    #def parse_FILE(self, src_file) :
-    #    check_return(libsrcml.srcml_unit_parse_FILE(self.unit, src_file))
-
-    # -------------------------------------------------------------------------------------------
-    # Convert the contents of a file descriptor and stored in the unit
-    # Parameter: unit -> A srcml_unit to parse the results to
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled - there is no file descriptor in Python
-    #def parse_fd(self, src_fd) :
-    #    check_return(libsrcml.srcml_unit_parse_fd(self.unit, src_fd))
-
-    # -------------------------------------------------------------------------------------------
-    # Convert to srcML the contents from the opened context accessed via read and close callbacks and place it into a unit
-    # Parameter: context -> an io context
-    # Parameter: read_callback -> a read callback function
-    # Parameter: close_callback -> a close callback function
-    # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled - Not sure this is needed for Python
-    #def parse_io(self, context, read_callback, close_callback) :
-    #    check_return(libsrcml.srcml_unit_parse_io(self.unit, context, read_callback, close_callback))
 
     # -------------------------------------------------------------------------------------------
     # Convert the srcML in a unit into source code and place it into a filename
@@ -317,10 +285,6 @@ class srcMLUnit:
     # -------------------------------------------------------------------------------------------
     def unparse_string(self) -> str :
         buffer = self.unparse_memory()
-        # buffer = c_char_p()
-        # size = c_size_t()
-        # status = libsrcml.srcml_unit_unparse_memory(self.c_unit, pointer(buffer), pointer(size))
-        # check_srcml_status(status)
         return buffer.decode() if self.get_src_encoding() == None else buffer.decode(self.get_src_encoding())
 
     # -------------------------------------------------------------------------------------------
@@ -333,38 +297,6 @@ class srcMLUnit:
             raise srcMLTypeError(self.unparse_file,"ofile",ofile)
         status = libsrcml.srcml_unit_unparse_fd(self.c_unit, ofile.fileno())
         check_srcml_status(status)
-
-    # -------------------------------------------------------------------------------------------
-    # Convert the srcML in a unit into source code and output to the FILE*
-    # Parameter: file -> FILE* opened for writing to output the source file
-    # Return: SRCML_STATUS_OK on success
-    # Return: Status error code on failure.
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled, Python doesn't have FILE*
-    #def unparse_FILE(self, file) :
-    #    check_return(libsrcml.srcml_unit_unparse_FILE(self.unit, file))
-
-    # -------------------------------------------------------------------------------------------
-    # Convert the srcML in a unit into source code and output to the file descriptor
-    # Parameter: fd File descriptor opened for writing to output the source file
-    # Return: SRCML_STATUS_OK on success
-    # Return: Status error code on failure.
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Python doesn't have file descriptor
-    #def unparse_fd(self, fd) :
-    #    check_return(libsrcml.srcml_unit_unparse_fd(self.unit, fd))
-
-    # -------------------------------------------------------------------------------------------
-    # Convert the srcML in a unit into source code and output using write callbacks
-    # Parameter: context -> an io context
-    # Parameter: write_callback -> a write callback function
-    # Parameter: close_callback -> a close callback function
-    # Return: SRCML_STATUS_OK on success
-    # Return: Status error code on failure.
-    # -------------------------------------------------------------------------------------------
-    # NOTE: Disabled, not sure if this is needed for Python
-    #def unparse_io(self, context, write_callback, close_callback) :
-    #    check_return(libsrcml.srcml_unit_unparse_io(self.unit, context, write_callback, close_callback))
 
     # -------------------------------------------------------------------------------------------
     # Write a start tag for a unit
@@ -396,7 +328,7 @@ class srcMLUnit:
             raise srcMLTypeError(self.write_start_element,"name",name)
         if type(uri) != str and uri != None:
             raise srcMLTypeError(self.write_start_element,"uri",uri)
-        
+
         status = libsrcml.srcml_write_start_element(self.c_unit, prefix.encode() if prefix != None else None, name.encode(), uri.encode() if uri != None else None)
         check_srcml_status(status)
 
@@ -419,7 +351,7 @@ class srcMLUnit:
             raise srcMLTypeError(self.write_start_element,"prefix",prefix)
         if type(uri) != str:
             raise srcMLTypeError(self.write_start_element,"uri",uri)
-        
+
         status = libsrcml.srcml_write_namespace(self.c_unit, prefix.encode(), uri.encode())
         check_srcml_status(status)
 
@@ -440,7 +372,6 @@ class srcMLUnit:
             raise srcMLTypeError(self.write_attribute,"uri",uri)
         if type(content) != str:
             raise srcMLTypeError(self.write_attribute,"content",content)
-        
 
         status = libsrcml.srcml_write_attribute(self.c_unit, prefix.encode() if prefix else None, name.encode(), uri.encode() if uri else None, content.encode())
         check_srcml_status(status)
@@ -453,6 +384,6 @@ class srcMLUnit:
     def write_string(self, content: str) -> None :
         if type(content) != str:
             raise srcMLTypeError(self.write_string,"content",content)
-        
+
         status = libsrcml.srcml_write_string(self.c_unit, content.encode())
         check_srcml_status(status)

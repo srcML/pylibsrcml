@@ -250,7 +250,7 @@ class srcMLArchive:
         status = libsrcml.srcml_archive_set_processing_instruction(self.c_archive, target.encode(), data.encode())
         check_srcml_status(status)
 
-     # -------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------
     # Set the root URL attribute of the srcML archive
     # Parameter: url -> A url path
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
@@ -461,16 +461,6 @@ class srcMLArchiveRead(srcMLArchive):
             raise ValueError("The provided source value is an incorrect format.")
         check_srcml_status(status)
 
-    # # -------------------------------------------------------------------------------------------
-    # # Clones the setup of the archive
-    # # Return: The cloned archive
-    # # -------------------------------------------------------------------------------------------
-    # def clone(archive: srcMLArchive, source: str | File | None = None, string_read_mode: ["srcml","filename",None] = None):
-    #     if not isinstance(archive, srcMLArchive):
-    #         raise srcMLTypeError(srcMLArchiveRead.clone, "archive", archive, inheritance_flag=True)
-    #     return srcMLArchiveRead(source, string_read_mode, libsrcml.srcml_archive_clone(archive.c_archive))
-
-
     # -------------------------------------------------------------------------------------------
     # Free a srcml archive that was previously allocated (destructor)
     # Note: The archive must be reallocated/re-created to use again
@@ -489,16 +479,6 @@ class srcMLArchiveRead(srcMLArchive):
         while unit != None:
             yield unit
             unit = self.read_unit()
-
-    # -------------------------------------------------------------------------------------------
-    # Next function for working with for loops
-    # Returns a srcMLUnit
-    # -------------------------------------------------------------------------------------------
-    # def __next__(self):
-    #     unit = self.read_unit()
-    #     if unit == None:
-    #         raise StopIteration
-    #     return unit
 
     # -------------------------------------------------------------------------------------------
     # Read the next unit from the archive
@@ -734,15 +714,6 @@ class srcMLArchiveWrite(srcMLArchive):
         #    status = srcMLStatus.OK
         check_srcml_status(status)
 
-    # # -------------------------------------------------------------------------------------------
-    # # Clones the setup of the archive
-    # # Return: The cloned archive
-    # # -------------------------------------------------------------------------------------------
-    # def clone(archive: srcMLArchive, out: str | File | None = None):
-    #     if not isinstance(archive, srcMLArchive):
-    #         raise srcMLTypeError(srcMLArchiveWrite.clone, "archive", archive, inheritance_flag=True)
-    #     return srcMLArchiveWrite(out, libsrcml.srcml_archive_clone(archive.c_archive))
-
     # -------------------------------------------------------------------------------------------
     # Append the srcml unit to the srcml archive
     # Parameter: unit -> A srcml unit to output
@@ -782,15 +753,6 @@ class srcMLArchiveWriteString(srcMLArchiveWrite):
         self.size = c_size_t()
         status = libsrcml.srcml_archive_write_open_memory(self.c_archive, pointer(self.buffer), pointer(self.size))
         check_srcml_status(status)
-
-    # # -------------------------------------------------------------------------------------------
-    # # Clones the setup of the archive
-    # # Return: The cloned archive
-    # # -------------------------------------------------------------------------------------------
-    # def clone(archive: srcMLArchive):
-    #     if not isinstance(archive, srcMLArchive):
-    #         raise srcMLTypeError(srcMLArchiveWriteString.clone, "archive", archive, inheritance_flag=True)
-    #     return srcMLArchiveWriteString(libsrcml.srcml_archive_clone(archive.c_archive))
 
     # -------------------------------------------------------------------------------------------
     # Close a srcml archive opened using archive.read_open_*() or archive.write_open_*()

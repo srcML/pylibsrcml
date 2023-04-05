@@ -108,7 +108,7 @@ def error_string() -> str:
 # Free a memory buffer allocated by functions such as srcml_archive_write_open_memory()
 # Parameter: buffer -> The allocated buffer
 # -------------------------------------------------------------------------------------------
-def memory_free(buffer: bytes) -> None:
-    if type(buffer) != bytes:
-        raise srcMLTypeError(memory_free,"buffer",buffer)
-    libsrcml.srcml_memory_free(buffer)
+# def memory_free(buffer: bytes) -> None:
+#     if type(buffer) != bytes:
+#         raise srcMLTypeError(memory_free,"buffer",buffer)
+#     libsrcml.srcml_memory_free(buffer)
