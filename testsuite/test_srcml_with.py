@@ -8,7 +8,7 @@ srcml = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 unit_text = f"""<unit xmlns="http://www.srcML.org/srcML/src" revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>
 </unit>"""
 
-with open("project.xml",'w') as file:
+with open("project.xml",'w',newline='\n') as file:
     file.write(srcml)
 
 
