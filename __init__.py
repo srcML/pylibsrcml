@@ -12,4 +12,3 @@ from .srcml_transform_result import srcMLTransformResult
 from .srcml_archive import srcMLArchive, srcMLArchiveRead, srcMLArchiveWrite, srcMLArchiveWriteString
 
 from atexit import register
-register(cleanup_globals)

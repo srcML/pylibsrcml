@@ -51,8 +51,10 @@ class srcMLUnit:
     # Free an allocated unit (void srcml_unit_free(struct srcml_unit*))
     # -------------------------------------------------------------------------------------------
     def __del__(self) -> None:
+        #print("IN UDEL",self.c_unit)
         if self.c_unit != 0 and self.c_unit != None and self.is_freeable:
             libsrcml.srcml_unit_free(self.c_unit)
+        #print("OUT UDEL")
 
     # -------------------------------------------------------------------------------------------
     # Set the source-code encoding for the srcml unit
