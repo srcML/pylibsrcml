@@ -58,5 +58,16 @@ with pylibsrcml.srcMLArchiveWriteString() as archive:
     archive.write_unit(unit)
 assert archive.closed
 assert archive.get_output_string() == srcml
+################################################# 6
+with pylibsrcml.srcMLArchive() as base_archive:
+    base_archive.set_tabstop(8)
+    base_archive.set_version("9")
+    base_archive.set_url("test")
+    with pylibsrcml.srcMLArchiveWriteString(clone_from = base_archive) as archive:
+        assert archive.get_tabstop() == 8
+        assert archive.get_version() == "9"
+        assert archive.get_url() == "test"
+    assert archive.closed
+    assert not base_archive.closed
+assert base_archive.closed
 #################################################
-

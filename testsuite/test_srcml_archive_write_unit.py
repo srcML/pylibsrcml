@@ -132,6 +132,8 @@ unit.parse_memory("a;\n")
 
 archive.write_unit(unit)
 
+assert archive.is_solitary_unit()
+
 s = archive.close()
 
 assert s == srcml_a_single

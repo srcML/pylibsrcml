@@ -1,3 +1,4 @@
+import re
 import pylibsrcml
 
 SRCML_VERSION_STRING = pylibsrcml.version_string()
@@ -171,7 +172,9 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.NUMBER
+assert result.is_number_result()
 assert result.get_number() == 1.0
+assert result.get_value() == 1.0
 
 iarchive.close()
 #################################################
@@ -187,7 +190,9 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.BOOLEAN
+assert result.is_bool_result()
 assert result.get_bool() == False
+assert result.get_value() == False
 
 iarchive.close()
 #################################################
@@ -203,7 +208,9 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.STRING
+assert result.is_string_result()
 assert result.get_string() == "C++"
+assert result.get_value() == "C++"
 
 iarchive.close()
 #################################################
@@ -220,6 +227,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -240,6 +248,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -260,6 +269,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -280,6 +290,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -301,6 +312,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -326,6 +338,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -346,6 +359,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -366,6 +380,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -386,6 +401,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -407,6 +423,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -428,6 +445,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -454,6 +472,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -475,6 +494,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -496,6 +516,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -517,6 +538,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -540,6 +562,7 @@ unit = iarchive.read_unit()
 result = iarchive.unit_apply_transforms(unit)
 
 assert result.get_type() == pylibsrcml.srcMLResult.UNITS
+assert result.is_unit_result()
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
@@ -850,7 +873,10 @@ assert result.get_type() == pylibsrcml.srcMLResult.UNITS
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
-oarchive.write_unit(result.get_unit(0))
+units = result.get_value()
+assert type(units) == list
+
+oarchive.write_unit(units[0])
 
 iarchive.close()
 s = oarchive.close()
@@ -880,7 +906,10 @@ assert result.get_type() == pylibsrcml.srcMLResult.UNITS
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
-oarchive.write_unit(result.get_unit(0))
+units = result.get_value()
+assert type(units) == list
+
+oarchive.write_unit(units[0])
 
 iarchive.close()
 s = oarchive.close()
@@ -910,7 +939,10 @@ assert result.get_type() == pylibsrcml.srcMLResult.UNITS
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
-oarchive.write_unit(result.get_unit(0))
+units = result.get_value()
+assert type(units) == list
+
+oarchive.write_unit(units[0])
 
 iarchive.close()
 s = oarchive.close()
@@ -940,7 +972,10 @@ assert result.get_type() == pylibsrcml.srcMLResult.UNITS
 assert result.get_unit_size() == 1
 assert (not result.get_unit(0)) == False
 
-oarchive.write_unit(result.get_unit(0))
+units = result.get_value()
+assert type(units) == list
+
+oarchive.write_unit(units[0])
 
 iarchive.close()
 s = oarchive.close()
