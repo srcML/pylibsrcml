@@ -120,4 +120,17 @@ assert unit.get_srcml() == '<unit xmlns="http://www.srcML.org/srcML/src" revisio
 #################################################
 
 
+#################################################
+# srcml_unit_get_loc
+################################################# 1
+locs = [142,35,820,115,399,119,70,51,16,38,97,43,93,32,104,31,17,68,46,170,98,95,41,254,34,92,52]
+archive = pylibsrcml.srcMLArchiveRead("data_big.xml")
+i = 0
+for unit in archive:
+    print(unit.get_loc())
+    assert unit.get_loc() == locs[i]
+    i += 1
+#################################################
+
+
 archive.close()

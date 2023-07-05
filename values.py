@@ -40,12 +40,6 @@ class srcMLOption:
     # ARCHIVE = 1<<14
     # HASH = 1<<15
 
-class srcMLArchiveType:
-    INAVLID = 0
-    RW = 1
-    READ = 2
-    WRITE = 3
-
 class SourceOutputEOL:
     AUTO = 0 # Source-code end of line determined automatically
     NATIVE = 0 # Source-code end of line determined according to operating system

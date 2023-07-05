@@ -18,28 +18,24 @@ class srcMLInvalidConstruction(Exception):
     def __init__(self, msg):
         super().__init__(msg)
 
+
+SRCML_STATUS_ERROR_STRINGS = {
+    srcMLStatus.ERROR: "srcMLStatus.ERROR: General srcML Error occured",
+    srcMLStatus.INVALID_ARGUMENT: "srcMLStatus.INVALID_ARGUMENT: An invalid argument was passed",
+    srcMLStatus.INVALID_INPUT: "srcMLStatus.INVALID_INPUT: The provided input was invalid",
+    srcMLStatus.INVALID_IO_OPERATION: "srcMLStatus.INVALID_IO_OPERATION: Unable to execute read I/O operation (input might be read-only)",
+    srcMLStatus.IO_ERROR: "srcMLStatus.IO_ERROR: Unable to open provided file",
+    srcMLStatus.UNINITIALIZED_UNIT: "srcMLStatus.UNINITIALIZED_UNIT: Unit is uninitialized",
+    srcMLStatus.UNSET_LANGUAGE: "srcMLStatus.UNSET_LANGUAGE: There is no language set",
+    srcMLStatus.NO_TRANSFORMATION: "srcMLStatus.NO_TRANSFORMATION: There are no transformations",
+}
 class srcMLException(Exception):
     def __init__(self,error_code):
         self.error_code = error_code
-        match error_code:
-            case srcMLStatus.ERROR:
-                error_string = "srcMLStatus.ERROR: General srcML Error occured"
-            case srcMLStatus.INVALID_ARGUMENT:
-                error_string = "srcMLStatus.INVALID_ARGUMENT: An invalid argument was passed"
-            case srcMLStatus.INVALID_INPUT:
-                error_string = "srcMLStatus.INVALID_INPUT: The provided input was invalid"
-            case srcMLStatus.INVALID_IO_OPERATION:
-                error_string = "srcMLStatus.INVALID_IO_OPERATION: Unable to execute read I/O operation (input might be read-only)"
-            case srcMLStatus.IO_ERROR:
-                error_string = "srcMLStatus.IO_ERROR: Unable to open provided file"
-            case srcMLStatus.UNINITIALIZED_UNIT:
-                error_string = "srcMLStatus.UNINITIALIZED_UNIT: Unit is uninitialized"
-            case srcMLStatus.UNSET_LANGUAGE:
-                error_string = "srcMLStatus.UNSET_LANGUAGE: There is no language set"
-            case srcMLStatus.NO_TRANSFORMATION:
-                error_string = "srcMLStatus.NO_TRANSFORMATION: There are no transformations"
-            case _:
-                error_string =f"Unknown srcMLStatus: error code {self.error_code}"
+        if error_code not in SRCML_STATUS_ERROR_STRINGS:
+            error_string = f"Unknown srcMLStatus: error code {self.error_code}"
+        else:
+            error_string = SRCML_STATUS_ERROR_STRINGS[error_code]
         super().__init__(error_string)
 
 class srcMLInvalidResultType(Exception):
