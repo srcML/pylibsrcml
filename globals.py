@@ -492,6 +492,18 @@ libsrcml.srcml_append_transform_relaxng_FILE.argtypes = [c_void_p, c_void_p]
 libsrcml.srcml_append_transform_relaxng_fd.restype = c_int
 libsrcml.srcml_append_transform_relaxng_fd.argtypes = [c_void_p, c_int]
 
+# int srcml_append_transform_srcql(struct srcml_archive* archive, const char* srcql_string);
+libsrcml.srcml_append_transform_srcql.restype = c_int
+libsrcml.srcml_append_transform_srcql.argtypes = [c_void_p, c_char_p]
+
+# int srcml_append_transform_srcql_attribute(struct srcml_archive* archive, const char* srcql_string, const char* prefix, const char* namespace_uri, const char* attr_name, const char* attr_value);
+libsrcml.srcml_append_transform_srcql_attribute.restype = c_int
+libsrcml.srcml_append_transform_srcql_attribute.argtypes = [c_void_p, c_char_p, c_char_p, c_char_p, c_char_p, c_char_p]
+
+# int srcml_append_transform_srcql_element(struct srcml_archive* archive, const char* srcql_string, const char* prefix, const char* namespace_uri, const char* element);
+libsrcml.srcml_append_transform_srcql_element.restype = c_int
+libsrcml.srcml_append_transform_srcql_element.argtypes = [c_void_p, c_char_p, c_char_p, c_char_p, c_char_p]
+
 # int srcml_append_transform_param(struct srcml_archive* archive, const char* param_name, const char* param_value);
 libsrcml.srcml_append_transform_param.restype = c_int
 libsrcml.srcml_append_transform_param.argtypes = [c_void_p, c_char_p, c_char_p]

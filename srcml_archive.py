@@ -558,7 +558,7 @@ class srcMLArchiveRead(srcMLArchive):
     # Parameter: element -> Element name
     # Return: CHANGED FOR PYLIBSRCML: returns nothing, simply raises an error if status isn't OK
     # -------------------------------------------------------------------------------------------
-    def append_transform_xpath_element(self, xpath_string: str, prefix: str, namespace_uri: str, element: str) :
+    def append_transform_xpath_element(self, xpath_string: str, prefix: str, namespace_uri: str, element: str) -> None:
         if type(xpath_string) != str:
             raise srcMLTypeError(self.append_transform_xpath_element,"xpath_string",xpath_string)
         if type(prefix) != str:
@@ -646,6 +646,55 @@ class srcMLArchiveRead(srcMLArchive):
         if type(relaxng_file) != File:
             raise srcMLTypeError(self.append_transform_relaxng_file,"relaxng_file",relaxng_file)
         check_srcml_status(libsrcml.srcml_append_transform_relaxng_fd(self.c_archive, relaxng_file.fileno()))
+
+    # -------------------------------------------------------------------------------------------
+    # Append the srcQL query to the list of transformations/queries
+    # -------------------------------------------------------------------------------------------
+    def append_transform_srcql(self, srcql_string: str) -> None:
+        if type(srcql_string) != str:
+            raise srcMLTypeError(self.append_transform_srcql,"srcql_string",srcql_string)
+
+        status = libsrcml.srcml_append_transform_srcql(self.c_archive, srcql_string.encode())
+        check_srcml_status(status)
+
+    # -------------------------------------------------------------------------------------------
+    # Append the srcQL query to the list of transformations/queries.
+    # Instead of outputting the results in a separate unit tag, output the complete
+    # archive marking the XPath results with a user provided element.
+    # -------------------------------------------------------------------------------------------
+    def append_transform_srcql_attribute(self, srcql_string: str, prefix: str, namespace_uri: str, attr_name: str, attr_value: str) -> None:
+        if type(srcql_string) != str:
+            raise srcMLTypeError(self.append_transform_srcql_attribute,"srcql_string",srcql_string)
+        if type(prefix) != str:
+            raise srcMLTypeError(self.append_transform_srcql_attribute,"prefix",prefix)
+        if type(namespace_uri) != str:
+            raise srcMLTypeError(self.append_transform_srcql_attribute,"namespace_uri",namespace_uri)
+        if type(attr_name) != str:
+            raise srcMLTypeError(self.append_transform_srcql_attribute,"attr_name",attr_name)
+        if type(attr_value) != str:
+            raise srcMLTypeError(self.append_transform_srcql_attribute,"attr_value",attr_value)
+
+        status = libsrcml.srcml_append_transform_srcql_attribute(self.c_archive, srcql_string.encode(), prefix.encode(), namespace_uri.encode(), attr_name.encode(), attr_value.encode())
+        check_srcml_status(status)
+
+
+    # -------------------------------------------------------------------------------------------
+    # Append the srcQL query to the list of transformations/queries.
+    # Instead of outputting the results in a separate unit tag, output the complete
+    # archive marking the XPath results with a user provided element.
+    # -------------------------------------------------------------------------------------------
+    def append_transform_srcql_element(self, srcql_string: str, prefix: str, namespace_uri: str, element: str) -> None:
+        if type(srcql_string) != str:
+            raise srcMLTypeError(self.append_transform_srcql_element,"srcql_string",srcql_string)
+        if type(prefix) != str:
+            raise srcMLTypeError(self.append_transform_srcql_element,"prefix",prefix)
+        if type(namespace_uri) != str:
+            raise srcMLTypeError(self.append_transform_srcql_element,"namespace_uri",namespace_uri)
+        if type(element) != str:
+            raise srcMLTypeError(self.append_transform_srcql_element,"element",element)
+        
+        status = libsrcml.srcml_append_transform_srcql_element(self.c_archive, srcql_string.encode(), prefix.encode(), namespace_uri.encode(), element.encode())
+        check_srcml_status(status)
 
     # -------------------------------------------------------------------------------------------
     # Append an XSLT parameter to the last transformation
