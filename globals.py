@@ -1,3 +1,12 @@
+# SPDX-License-Identifier: GPL-3.0-only
+"""
+@file globals.py
+
+@copyright Copyright (C) 2014-2025 srcML, LLC. (www.srcML.org)
+
+This file is part of pylibsrcml, a Python binding of libsrcml
+"""
+
 from .exceptions import srcMLNotFoundError
 
 from ctypes import cdll
@@ -22,6 +31,22 @@ libsrcml.srcml_version_number.argtypes = []
 # const char* srcml_version_string();
 libsrcml.srcml_version_string.restype = c_char_p
 libsrcml.srcml_version_string_argtypes = []
+
+# int srcml_markup_version_number(const char* language);
+libsrcml.srcml_markup_version_number.restype = c_int
+libsrcml.srcml_markup_version_number.argtypes = [c_char_p]
+
+# const char* srcml_markup_version_string(const char* language);
+libsrcml.srcml_markup_version_number.restype = c_char_p
+libsrcml.srcml_markup_version_number.argtypes = [c_char_p]
+
+# int srcml_libsrcml_version_number();
+libsrcml.srcml_libsrcml_version_number.restype = c_int
+libsrcml.srcml_libsrcml_version_number.argtypes = []
+
+# const char* srcml_libsrcml_version_string();
+libsrcml.srcml_libsrcml_version_string.restype = c_char_p
+libsrcml.srcml_libsrcml_version_string = []
 
 # int srcml_check_language(const char* language);
 libsrcml.srcml_check_language.restype = c_int
@@ -213,9 +238,30 @@ libsrcml.srcml_get_namespace_uri.argtypes = [c_size_t]
 libsrcml.srcml_get_uri_from_prefix.restype = c_char_p
 libsrcml.srcml_get_uri_from_prefix.argtypes = [c_char_p]
 
+# int srcml_add_attribute(const char* uri, const char* name, const char* value);
+libsrcml.srcml_add_attribute.restype = c_int
+libsrcml.srcml_add_attribute.argtypes = [c_char_p,c_char_p,c_char_p]
+
+# size_t srcml_get_attribute_size();
+libsrcml.srcml_get_attribute_size.restype = c_size_t
+libsrcml.srcml_get_attribute_size.argtypes = []
+
+# const char* srcml_get_attribute_prefix(size_t pos);
+libsrcml.srcml_get_attribute_prefix.restype = c_char_p
+libsrcml.srcml_get_attribute_prefix.argtypes = [c_size_t]
+
+# const char* srcml_get_attribute_name(size_t pos);
+libsrcml.srcml_get_attribute_name.restype = c_char_p
+libsrcml.srcml_get_attribute_name.argtypes = [c_size_t]
+
+# const char* srcml_get_attribute_value(size_t pos);
+libsrcml.srcml_get_attribute_value.restype = c_char_p
+libsrcml.srcml_get_attribute_value.argtypes = [c_size_t]
+
 # void srcml_cleanup_globals();
 libsrcml.srcml_cleanup_globals.restype = None
 libsrcml.srcml_cleanup_globals.argtypes = []
+
 
 # ARCHIVE
 
@@ -350,6 +396,26 @@ libsrcml.srcml_archive_register_file_extension.argtypes = [c_void_p, c_char_p, c
 # int srcml_archive_register_namespace(struct srcml_archive* archive, const char* prefix, const char* uri);
 libsrcml.srcml_archive_register_namespace.restype = c_int
 libsrcml.srcml_archive_register_namespace.argtypes = [c_void_p, c_char_p, c_char_p]
+
+# int srcml_archive_add_attribute(struct srcml_archive* archive, const char* uri, const char* name, const char* value);
+libsrcml.srcml_archive_add_attribute.restype = c_int
+libsrcml.srcml_archive_add_attribute.argtypes = [c_void_p, c_char_p, c_char_p, c_char_p]
+
+# size_t srcml_archive_get_attribute_size(const struct srcml_archive* archive);
+libsrcml.srcml_archive_get_attribute_size.restype = c_size_t
+libsrcml.srcml_archive_get_attribute_size.argtypes = [c_void_p]
+
+# const char* srcml_archive_get_attribute_prefix(const struct srcml_archive* archive, size_t pos);
+libsrcml.srcml_archive_get_attribute_prefix.restype = c_char_p
+libsrcml.srcml_archive_get_attribute_prefix.argtypes = [c_void_p, c_size_t]
+
+# const char* srcml_archive_get_attribute_name(const struct srcml_archive* archive, size_t pos);
+libsrcml.srcml_archive_get_attribute_name.restype = c_char_p
+libsrcml.srcml_archive_get_attribute_name.argtypes = [c_void_p, c_size_t]
+
+# const char* srcml_archive_get_attribute_value(const struct srcml_archive* archive, size_t pos);
+libsrcml.srcml_archive_get_attribute_value.restype = c_char_p
+libsrcml.srcml_archive_get_attribute_value.argtypes = [c_void_p, c_size_t]
 
 # int srcml_archive_set_processing_instruction(struct srcml_archive* archive, const char* target, const char* data);
 libsrcml.srcml_archive_set_processing_instruction.restype = c_int
@@ -596,6 +662,30 @@ libsrcml.srcml_unit_set_timestamp.argtypes = [c_void_p, c_char_p]
 libsrcml.srcml_unit_set_eol.restype = c_int
 libsrcml.srcml_unit_set_eol.argtypes = [c_void_p, c_size_t]
 
+# int srcml_unit_register_namespace(struct srcml_unit* unit, const char* prefix, const char* uri);
+libsrcml.srcml_unit_register_namespace.restype = c_int
+libsrcml.srcml_unit_register_namespace.argtypes = [c_void_p, c_char_p, c_char_p]
+
+# int srcml_unit_add_attribute(struct srcml_unit* unit, const char* uri, const char* name, const char* value);
+libsrcml.srcml_unit_add_attribute.restype = c_int
+libsrcml.srcml_unit_add_attribute.argtypes = [c_void_p, c_char_p, c_char_p, c_char_p]
+
+# size_t srcml_unit_get_attribute_size(const struct srcml_unit* unit);
+libsrcml.srcml_unit_get_attribute_size.restype = c_size_t
+libsrcml.srcml_unit_get_attribute_size.argtypes = [c_void_p]
+
+# const char* srcml_unit_get_attribute_prefix(const struct srcml_unit* unit, size_t pos);
+libsrcml.srcml_unit_get_attribute_prefix.restype = c_char_p
+libsrcml.srcml_unit_get_attribute_prefix.argtypes = [c_void_p, c_size_t]
+
+# const char* srcml_unit_get_attribute_name(const struct srcml_unit* unit, size_t pos);
+libsrcml.srcml_unit_get_attribute_name.restype = c_char_p
+libsrcml.srcml_unit_get_attribute_name.argtypes = [c_void_p, c_size_t]
+
+# const char* srcml_unit_get_attribute_value(const struct srcml_unit* unit, size_t pos);
+libsrcml.srcml_unit_get_attribute_value.restype = c_char_p
+libsrcml.srcml_unit_get_attribute_value.argtypes = [c_void_p, c_size_t]
+
 # const char* srcml_unit_get_src_encoding(const struct srcml_unit* unit);
 libsrcml.srcml_unit_get_src_encoding.restype = c_char_p
 libsrcml.srcml_unit_get_src_encoding.argtypes = [c_void_p]
@@ -644,6 +734,26 @@ libsrcml.srcml_unit_get_srcml_outer.argtypes = [c_void_p]
 libsrcml.srcml_unit_get_srcml_inner.restype = c_char_p
 libsrcml.srcml_unit_get_srcml_inner.argtypes = [c_void_p]
 
+# size_t srcml_unit_get_namespace_size(const struct srcml_unit* unit);
+libsrcml.srcml_unit_get_namespace_size.restype = c_size_t
+libsrcml.srcml_unit_get_namespace_size.argtypes = [c_void_p]
+
+# const char* srcml_unit_get_namespace_prefix(const struct srcml_unit* unit, size_t pos);
+libsrcml.srcml_unit_get_namespace_prefix.restype = c_char_p
+libsrcml.srcml_unit_get_namespace_prefix.argtypes = [c_void_p, c_size_t]
+
+# const char* srcml_unit_get_prefix_from_uri(const struct srcml_unit* unit, const char* namespace_uri);
+libsrcml.srcml_unit_get_prefix_from_uri.restype = c_char_p
+libsrcml.srcml_unit_get_prefix_from_uri.argtypes = [c_void_p, c_char_p]
+
+# const char* srcml_unit_get_namespace_uri(const struct srcml_unit* unit, size_t pos);
+libsrcml.srcml_unit_get_namespace_uri.restype = c_char_p
+libsrcml.srcml_unit_get_namespace_uri.argtypes = [c_void_p, c_size_t]
+
+# const char* srcml_unit_get_uri_from_prefix(const struct srcml_unit* unit, const char* prefix);
+libsrcml.srcml_unit_get_uri_from_prefix.restype = c_char_p
+libsrcml.srcml_unit_get_uri_from_prefix.argtypes = [c_void_p, c_char_p]
+
 # int srcml_unit_parse_filename(struct srcml_unit* unit, const char* src_filename);
 libsrcml.srcml_unit_parse_filename.restype = c_int
 libsrcml.srcml_unit_parse_filename.argtypes = [c_void_p, c_char_p]
@@ -663,6 +773,14 @@ libsrcml.srcml_unit_parse_fd.argtypes = [c_void_p, c_int]
 # int srcml_unit_parse_io(struct srcml_unit* unit, void * context, ssize_t (*read_callback)(void * context, void * buffer, size_t len), int (*close_callback)(void * context));
 libsrcml.srcml_unit_parse_io.restype = c_int
 libsrcml.srcml_unit_parse_io.argtypes = [c_void_p, c_void_p, read_callback_t, close_callback_t]
+
+# const char* srcml_unit_get_src(struct srcml_unit* unit);
+libsrcml.srcml_unit_get_src.restype = c_char_p
+libsrcml.srcml_unit_get_src.argtypes = [c_void_p]
+
+# ssize_t srcml_unit_get_src_size(struct srcml_unit* unit);
+libsrcml.srcml_unit_get_src_size.restype = c_size_t
+libsrcml.srcml_unit_get_src_size.argtypes = [c_void_p]
 
 # int srcml_unit_unparse_filename(struct srcml_unit* unit, const char* src_filename);
 libsrcml.srcml_unit_unparse_filename.restype = c_int

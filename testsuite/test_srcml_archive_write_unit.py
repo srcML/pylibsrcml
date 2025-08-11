@@ -1,3 +1,12 @@
+# SPDX-License-Identifier: GPL-3.0-only
+"""
+@file test_srcml_archive_write_unit.py
+
+@copyright Copyright (C) 2014-2025 srcML, LLC. (www.srcML.org)
+
+This file is part of the pylibsrcml testsuite
+"""
+
 import pylibsrcml
 
 srcml_a = f"""<unit revision="{pylibsrcml.SRCML_VERSION_STRING}" language="C++" filename="a.cpp"><expr_stmt><expr><name>a</name></expr>;</expr_stmt>

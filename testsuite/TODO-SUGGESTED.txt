@@ -1,9 +1,0 @@
-check_extension is failing on WSL Ubuntu
-
-
-
-crash_string
-srcml_b = f"""<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<s:unit xmlns:s="http://www.srcML.org/srcML/src" revision=)""{SRCML_VERSION_STRING}" language="C++" filename="project" version="1"><s:expr_stmt><s:expr><s:name>b</s:name></s:expr>;</s:expr_stmt>
-</s:unit>"""
-

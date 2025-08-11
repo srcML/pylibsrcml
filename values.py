@@ -1,4 +1,11 @@
-#from enum import Enum
+# SPDX-License-Identifier: GPL-3.0-only
+"""
+@file values.py
+
+@copyright Copyright (C) 2014-2025 srcML, LLC. (www.srcML.org)
+
+This file is part of pylibsrcml, a Python binding of libsrcml
+"""
 
 SRCML_VERSION_NUMBER = 1000
 SRCML_VERSION_STRING = "1.0.0"
@@ -20,7 +27,9 @@ class srcMLLanguage:
     CXX = "C++"
     CPP = "C++"
     CSHARP = "C#"
+    OBJECTIVE_C = "Objective-C"
     JAVA = "Java"
+    PYTHON = "Python"
     XML = "xml"
 
 class srcMLOption:

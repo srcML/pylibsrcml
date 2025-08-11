@@ -3,6 +3,7 @@ test/
 proj*
 *.cpp
 foo.xml
+output1.xml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -1,3 +1,11 @@
+# SPDX-License-Identifier: GPL-3.0-only
+"""
+@file test_srcml_archive_read_open.py
+
+@copyright Copyright (C) 2014-2025 srcML, LLC. (www.srcML.org)
+
+This file is part of the pylibsrcml testsuite
+"""
 
 import pylibsrcml
 

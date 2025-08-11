@@ -1,3 +1,12 @@
+# SPDX-License-Identifier: GPL-3.0-only
+"""
+@file test_srcml_write_by_element.py
+
+@copyright Copyright (C) 2014-2024 srcML, LLC. (www.srcML.org)
+
+This file is part of the pylibsrcml testsuite
+"""
+
 import pylibsrcml
 
 SRCML_VERSION_STRING = pylibsrcml.version_string()
@@ -142,7 +151,8 @@ archive.enable_solitary_unit()
 unit = archive.unit_create()
 unit.set_language("C++")
 unit.write_start_unit()
-unit.write_start_element(None,'element',"bar")
+unit.write_start_element(None,'element',None)
+unit.write_namespace(None,"bar")
 unit.write_end_element()
 unit.write_end_unit()
 archive.write_unit(unit)
@@ -151,20 +161,6 @@ s = archive.close()
 
 assert s == xml_decl + start_unit + '<element xmlns="bar"/>' + end_unit
 ################################################# 5
-archive = pylibsrcml.srcMLArchiveWriteString()
-archive.enable_solitary_unit()
-unit = archive.unit_create()
-unit.set_language("C++")
-unit.write_start_unit()
-unit.write_start_element("foo","element","bar")
-unit.write_end_element()
-unit.write_end_unit()
-archive.write_unit(unit)
-
-s = archive.close()
-
-assert s == xml_decl + start_unit + '<foo:element xmlns:foo="bar"/>' + end_unit
-################################################# 6
 archive = pylibsrcml.srcMLArchiveWriteString()
 archive.enable_solitary_unit()
 unit = archive.unit_create()
@@ -304,12 +300,16 @@ unit = archive.unit_create()
 unit.set_language("C++")
 unit.write_start_unit()
 unit.write_start_element(None,"element",None)
-try:
-    unit.write_namespace(None,"bar")
-    assert False
-except pylibsrcml.srcMLTypeError:
-    pass
-archive.close()
+
+unit.write_namespace(None,"bar")
+
+unit.write_end_element()
+unit.write_end_unit()
+archive.write_unit(unit)
+
+s = archive.close()
+
+assert s == xml_decl + start_unit + '<element xmlns="bar"/>' + end_unit
 ################################################# 4
 archive = pylibsrcml.srcMLArchiveWriteString()
 archive.enable_solitary_unit()

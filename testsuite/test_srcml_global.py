@@ -1,5 +1,13 @@
-import pylibsrcml
+# SPDX-License-Identifier: GPL-3.0-only
+"""
+@file test_srcml_global.py
 
+@copyright Copyright (C) 2014-2024 srcML, LLC. (www.srcML.org)
+
+This file is part of the pylibsrcml testsuite
+"""
+
+import pylibsrcml
 
 #################################################
 # srcml_check_language
@@ -9,13 +17,14 @@ assert pylibsrcml.check_language("C++") == 2
 assert pylibsrcml.check_language("Java") == 4
 assert pylibsrcml.check_language("C#") == 8
 assert pylibsrcml.check_language("Objective-C") == 17
+assert pylibsrcml.check_language("Python") == 32
 #################################################
 
 
 #################################################
 # srcml_get_language_list_size
 ################################################# 1
-assert pylibsrcml.get_language_list_size() == 5
+assert pylibsrcml.get_language_list_size() == 6
 #################################################
 
 
@@ -23,7 +32,7 @@ assert pylibsrcml.get_language_list_size() == 5
 # srcml_get_language_list
 ################################################# 1
 langs = pylibsrcml.get_language_list()
-assert langs == ["C","C++","C#","Java","Objective-C"]
+assert langs == ["C","C++","C#","Java","Python","Objective-C"]
 #################################################
 
 
@@ -34,7 +43,8 @@ assert pylibsrcml.get_language_from_list_pos(0) == "C"
 assert pylibsrcml.get_language_from_list_pos(1) == "C++"
 assert pylibsrcml.get_language_from_list_pos(2) == "C#"
 assert pylibsrcml.get_language_from_list_pos(3) == "Java"
-assert pylibsrcml.get_language_from_list_pos(4) == "Objective-C"
+assert pylibsrcml.get_language_from_list_pos(4) == "Python"
+assert pylibsrcml.get_language_from_list_pos(5) == "Objective-C"
 try:
     pylibsrcml.get_language_from_list_pos(-1)
     assert False
@@ -58,8 +68,7 @@ assert pylibsrcml.check_extension("a.cpp.gz") == "C++"
 pylibsrcml.register_file_extension("foo","C++")
 assert pylibsrcml.check_extension("a.foo") == "C++"
 ################################################# 4
-# print(pylibsrcml.check_extension("a.foo.gz"))
-# assert pylibsrcml.check_extension("a.foo.gz") == "C++"
+assert pylibsrcml.check_extension("a.foo.gz") == "C++"
 ################################################# 5
 assert pylibsrcml.check_extension("a.bar") == None
 ################################################# 6
@@ -108,8 +117,15 @@ assert pylibsrcml.check_extension("a.java") == "Java"
 assert pylibsrcml.check_extension("a.aj") == "Java"
 ################################################# 26
 assert pylibsrcml.check_extension("a.cs") == "C#"
+################################################# 27
+assert pylibsrcml.check_extension("a.py") == "Python"
+################################################# 28
+assert pylibsrcml.check_extension("a.pyi") == "Python"
+################################################# 29
+assert pylibsrcml.check_extension("a.pyw") == "Python"
+################################################# 30
+assert pylibsrcml.check_extension("a.pyz") == "Python"
 #################################################
-
 
 #################################################
 # srcml_check_encoding

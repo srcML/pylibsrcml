@@ -1,23 +1,13 @@
+# SPDX-License-Identifier: GPL-3.0-only
+"""
+@file exceptions.py
+
+@copyright Copyright (C) 2014-2025 srcML, LLC. (www.srcML.org)
+
+This file is part of pylibsrcml, a Python binding of libsrcml
+"""
+
 from .values import srcMLStatus
-
-# Class representing an error for when srcML cannot be found
-class srcMLNotFoundError(Exception):
-    def __init__(self):
-        super().__init__("srcML could not be found on your system. For installation instructions, visit https://www.srcml.org/")
-
-# Class representing an error for when an invalid type is passed to a pylibsrcml function
-class srcMLTypeError(Exception):
-    def __init__(self, func: "function", arg: str, val, *, inheritance_flag = False):
-        if not inheritance_flag:
-            msg = f"{func.__name__} requires that parameter `{arg}` be {str(func.__annotations__[arg])} (not {str(type(val))})"
-        else:
-            msg = f"{func.__name__} requires that parameter {arg} be or inherit from {str(func.__annotations__[arg])} (not {str(type(val))})"
-        super().__init__(msg)
-
-class srcMLInvalidConstruction(Exception):
-    def __init__(self, msg):
-        super().__init__(msg)
-
 
 SRCML_STATUS_ERROR_STRINGS = {
     srcMLStatus.ERROR: "srcMLStatus.ERROR: General srcML Error occured",
@@ -29,6 +19,7 @@ SRCML_STATUS_ERROR_STRINGS = {
     srcMLStatus.UNSET_LANGUAGE: "srcMLStatus.UNSET_LANGUAGE: There is no language set",
     srcMLStatus.NO_TRANSFORMATION: "srcMLStatus.NO_TRANSFORMATION: There are no transformations",
 }
+
 class srcMLException(Exception):
     def __init__(self,error_code):
         self.error_code = error_code
@@ -38,9 +29,27 @@ class srcMLException(Exception):
             error_string = SRCML_STATUS_ERROR_STRINGS[error_code]
         super().__init__(error_string)
 
+class srcMLNotFoundError(Exception):
+    """Class representing an error for when srcML cannot be found"""
+    def __init__(self):
+        super().__init__("srcML could not be found on your system. For installation instructions, visit https://www.srcml.org/")
+
+class srcMLTypeError(Exception):
+    """Class representing an error for when an invalid type is passed to a pylibsrcml function"""
+    def __init__(self, func: "function", arg: str, val, *, inheritance_flag = False):
+        if not inheritance_flag:
+            msg = f"{func.__name__} requires that parameter `{arg}` be {str(func.__annotations__[arg])} (not {str(type(val))})"
+        else:
+            msg = f"{func.__name__} requires that parameter {arg} be or inherit from {str(func.__annotations__[arg])} (not {str(type(val))})"
+        super().__init__(msg)
+
+class srcMLInvalidConstruction(Exception):
+    def __init__(self, msg):
+        super().__init__(msg)
+
 class srcMLInvalidResultType(Exception):
     def __init__(self):
-        super().__init__("An invalid srcMLResult type was incountered.")
+        super().__init__("An invalid srcMLResult type was encountered.")
 
 class srcDiffRevisionInvalid(Exception):
     def __init__(self):
