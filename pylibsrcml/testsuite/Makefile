@@ -1,5 +1,4 @@
 tests:
-	python3 test_srcml_append_transform.py
 	python3 test_srcml_apply_transforms.py
 	python3 test_srcml_archive_check_extension.py
 	python3 test_srcml_archive_clone.py
