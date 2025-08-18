@@ -46,7 +46,7 @@ libsrcml.srcml_libsrcml_version_number.argtypes = []
 
 # const char* srcml_libsrcml_version_string();
 libsrcml.srcml_libsrcml_version_string.restype = c_char_p
-libsrcml.srcml_libsrcml_version_string = []
+libsrcml.srcml_libsrcml_version_string.argtypes = []
 
 # int srcml_check_language(const char* language);
 libsrcml.srcml_check_language.restype = c_int
