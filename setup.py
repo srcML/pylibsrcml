@@ -14,5 +14,5 @@ setup(
     package_data={
         "pylibsrcml": ["testsuite/*"],
     },
-    python_requires=">=3.7",
+    python_requires=">=3.10",
 )
